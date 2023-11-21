@@ -91,6 +91,13 @@ int main()
 
 	Texture pawn = Texture("C:/Users/kylia/Desktop/GitHub/ChessBrain/images/chess_piece_2_black_bishop.png");
 
+
+	unsigned int FBO;
+	glGenFramebuffers(1, &FBO);
+	glBindFramebuffer(GL_READ_FRAMEBUFFER, FBO);
+	glFramebufferTexture2D(GL_READ_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, pawn.texID, 0);
+
+	// Board
 	unsigned int VAO, VBO;
 	glGenVertexArrays(1, &VAO);
 	glGenBuffers(1, &VBO);
@@ -111,6 +118,9 @@ int main()
 		shader.use();
 		glBindVertexArray(VAO);
 		glDrawArrays(GL_TRIANGLES, 0, 6);
+
+		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, FBO);
+		glBlitFramebuffer(0, 0, windowWidth, windowHeight, 0, 0, windowWidth, windowHeight, GL_COLOR_BUFFER_BIT, GL_NEAREST);
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();

@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.28)
 project(ChessBrain)
 
 # Recursively find all source files
-file(GLOB_RECURSE sources src/*(.cpp|.c) include/*.h)
+file(GLOB_RECURSE sources src/*(.c|.cpp) include/*(.h|.hpp))
 
 find_package(OpenGL REQUIRED)
 
