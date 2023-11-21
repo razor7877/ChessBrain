@@ -2,13 +2,35 @@
 
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
+#include "stb_image.h"
 
+#include "texture.hpp"
 #include "shader.hpp"
 
-const int WINDOW_WIDTH = 800;
+// Startup resolution
+const int WINDOW_WIDTH = 600;
 const int WINDOW_HEIGHT = 600;
 
+// Current resolution (can be changed by window resize callbacks)
+int windowWidth = WINDOW_WIDTH;
+int windowHeight = WINDOW_HEIGHT;
+
 GLFWwindow* window;
+
+void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
+{
+	// Quit program when pressinc ESC
+	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
+	{
+		glfwSetWindowShouldClose(window, true);
+	}
+}
+
+void framebuffer_size_callback(GLFWwindow* window, int width, int height)
+{
+	std::cout << "Resized window\n";
+	glViewport(0, 0, width, height);
+}
 
 int setupGlfwContext()
 {
@@ -28,13 +50,11 @@ int setupGlfwContext()
 		return -1;
 	}
 	glfwMakeContextCurrent(window);
-	/*
+	
 	// Set callback functions for window resizing and handling input
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
-	glfwSetCursorPosCallback(window, mouse_callback);
-	glfwSetScrollCallback(window, scroll_callback);
 	glfwSetKeyCallback(window, key_callback);
-	*/
+	
 	// Check if GLAD loaded successfully
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 	{
@@ -52,6 +72,7 @@ int main()
 		return -1;
 	}
 
+	// Creates a quad that is used to draw the board
 	float vertices[] = {
 		-1.0f, 1.0f, 0.0f,
 		1.0f, 1.0f, 0.0f,
@@ -62,10 +83,13 @@ int main()
 		-1.0f, -1.0f, 0.0f,
 	};
 
+	// Create the shader for the board
 	Shader shader = Shader(
 		"C:/Users/kylia/Desktop/GitHub/ChessBrain/src/shaders/default.vert",
 		"C:/Users/kylia/Desktop/GitHub/ChessBrain/src/shaders/default.frag"
 	);
+
+	Texture pawn = Texture("C:/Users/kylia/Desktop/GitHub/ChessBrain/images/chess_piece_2_black_bishop.png");
 
 	unsigned int VAO, VBO;
 	glGenVertexArrays(1, &VAO);
