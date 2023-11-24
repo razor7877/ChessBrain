@@ -1,5 +1,7 @@
 #pragma once
-#include "piece.hpp"
+#include "pieces/piece.hpp"
+
+class Piece;
 
 struct Spot
 {

@@ -1,6 +1,11 @@
-#include "board.hpp"
+#include "game/board.hpp"
 
 Board::Board()
 {
 	this->resetBoard();
+}
+
+void Board::resetBoard()
+{
+
 }

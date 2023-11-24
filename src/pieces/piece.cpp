@@ -1,4 +1,4 @@
-#include "piece.hpp"
+#include "pieces/piece.hpp"
 
 Piece::Piece(bool white)
 {

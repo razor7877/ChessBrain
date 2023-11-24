@@ -1,9 +1,9 @@
 #include <iostream>
 
 #include <glad/glad.h>
-#include <stb_image.h>
+#include <graphics/stb_image.h>
 
-#include "texture.hpp"
+#include "graphics/texture.hpp"
 
 Texture::Texture()
 {

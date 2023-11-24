@@ -2,10 +2,10 @@
 
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
-#include "stb_image.h"
+#include "graphics/stb_image.h"
 
-#include "texture.hpp"
-#include "shader.hpp"
+#include "graphics/texture.hpp"
+#include "graphics/shader.hpp"
 
 // Startup resolution
 const int WINDOW_WIDTH = 600;
@@ -91,7 +91,6 @@ int main()
 
 	Texture pawn = Texture("C:/Users/kylia/Desktop/GitHub/ChessBrain/images/chess_piece_2_black_bishop.png");
 
-
 	unsigned int FBO;
 	glGenFramebuffers(1, &FBO);
 	glBindFramebuffer(GL_READ_FRAMEBUFFER, FBO);
@@ -119,8 +118,8 @@ int main()
 		glBindVertexArray(VAO);
 		glDrawArrays(GL_TRIANGLES, 0, 6);
 
-		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, FBO);
-		glBlitFramebuffer(0, 0, windowWidth, windowHeight, 0, 0, windowWidth, windowHeight, GL_COLOR_BUFFER_BIT, GL_NEAREST);
+		//glBindFramebuffer(GL_DRAW_FRAMEBUFFER, FBO);
+		//glBlitFramebuffer(0, 0, windowWidth, windowHeight, 0, 0, windowWidth, windowHeight, GL_COLOR_BUFFER_BIT, GL_NEAREST);
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();

@@ -3,7 +3,7 @@
 #include <sstream>
 #include <iostream>
 
-#include "shader.hpp"
+#include "graphics/shader.hpp"
 
 Shader::Shader(const char* vertexPath, const char* fragmentPath)
 {

@@ -1,5 +1,5 @@
 #pragma once
-#include "spot.hpp"
+#include "game/spot.hpp"
 
 struct Board
 {

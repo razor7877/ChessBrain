@@ -1,6 +1,9 @@
 #pragma once
-#include "spot.hpp"
-#include "board.hpp"
+#include "game/board.hpp"
+#include "game/spot.hpp"
+
+class Board;
+struct Spot;
 
 // Represents a single chess piece
 class Piece
