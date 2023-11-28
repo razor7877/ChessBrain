@@ -8,3 +8,5 @@ bool Queen::canMove(Board board, Spot start, Spot end)
 {
 	return true;
 }
+
+PieceType Queen::getType() { return PieceType::QUEEN; }

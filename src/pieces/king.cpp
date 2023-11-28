@@ -8,3 +8,5 @@ bool King::canMove(Board board, Spot start, Spot end)
 {
 	return true;
 }
+
+PieceType King::getType() { return PieceType::KING; }

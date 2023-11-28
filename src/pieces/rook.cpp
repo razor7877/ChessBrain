@@ -8,3 +8,5 @@ bool Rook::canMove(Board board, Spot start, Spot end)
 {
 	return true;
 }
+
+PieceType Rook::getType() { return PieceType::ROOK; }

@@ -21,3 +21,5 @@ bool Pawn::canMove(Board board, Spot start, Spot end)
 		*/
 	return true;
 }
+
+PieceType Pawn::getType() { return PieceType::PAWN; }

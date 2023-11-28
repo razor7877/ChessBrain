@@ -5,6 +5,7 @@
 #include "pieces/pawn.hpp"
 #include "pieces/queen.hpp"
 #include "pieces/rook.hpp"
+#include <iostream>
 
 Board::Board()
 {
@@ -54,6 +55,25 @@ void Board::resetBoard()
 	this->boxes[5][0] = Spot(&Pawn(true), 6, 2);
 	this->boxes[6][0] = Spot(&Pawn(true), 7, 2);
 	this->boxes[7][0] = Spot(&Pawn(true), 8, 2);
+
+	for (int x = 0; x < 8; x++)
+	{
+		for (int y = 0; y < 8; y++)
+		{
+			if (&this->boxes[x][y] != NULL)
+			{
+				std::string type = "unset";
+				switch (this->boxes[x][y].piece->getType())
+				{
+				case PieceType::PAWN:
+					type = "Pawn";
+				default:
+					type = "Default";
+				}
+				printf("Piece at (%d,%d): %s\n", x, type.c_str());
+			}
+		}
+	}
 }
 
 Board::~Board()
