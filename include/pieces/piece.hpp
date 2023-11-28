@@ -1,9 +1,10 @@
-#pragma once
+#ifndef PIECE_HPP
+#define PIECE_HPP
 #include "game/board.hpp"
 #include "game/spot.hpp"
 
 class Board;
-struct Spot;
+class Spot;
 
 // Represents a single chess piece
 class Piece
@@ -21,3 +22,4 @@ private:
 	bool killed = false;
 	bool white = false;
 };
+#endif

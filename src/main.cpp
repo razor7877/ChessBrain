@@ -1,11 +1,12 @@
 #include <iostream>
 
-#include "glad/glad.h"
-#include "GLFW/glfw3.h"
-#include "graphics/stb_image.h"
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
+#include <graphics/stb_image.h>
 
 #include "graphics/texture.hpp"
 #include "graphics/shader.hpp"
+#include "game/board.hpp"
 
 // Startup resolution
 const int WINDOW_WIDTH = 600;
@@ -107,6 +108,8 @@ int main()
 
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
+
+	//Board board = Board();
 
 	// Render loop
 	while (!glfwWindowShouldClose(window))

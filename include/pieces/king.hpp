@@ -3,5 +3,7 @@
 
 class King : public virtual Piece
 {
+public:
+	King(bool white);
 	virtual bool canMove(Board board, Spot start, Spot end);
 };

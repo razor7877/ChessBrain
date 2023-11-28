@@ -3,5 +3,7 @@
 
 class Pawn : public virtual Piece
 {
+public:
+	Pawn(bool white);
 	virtual bool canMove(Board board, Spot start, Spot end);
 };

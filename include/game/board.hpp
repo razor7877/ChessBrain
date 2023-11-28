@@ -1,9 +1,15 @@
-#pragma once
+#ifndef BOARD_HPP
+#define BOARD_HPP
 #include "game/spot.hpp"
 
-struct Board
+class Spot;
+
+class Board
 {
-	Spot boxes[8][8]{};
+public:
+	Spot** boxes;
 	Board();
+	~Board();
 	void resetBoard();
 };
+#endif
