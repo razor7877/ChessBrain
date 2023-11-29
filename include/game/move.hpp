@@ -1,6 +1,8 @@
 #pragma once
-#include "player.hpp"
-#include "spot.hpp"
+#include "game/player.hpp"
+#include "game/spot.hpp"
+
+class Player;
 
 // A single move made during a game, containing information about the piece moved, by which player,
 // the start and end position etc.

@@ -1,11 +1,12 @@
 #pragma once
 
+// An abstract class that represents a player
 class Player
 {
 public:
 	bool whiteSide;
 	bool humanPlayer;
 
-	bool isWhiteSide() { return this->whiteSide; }
-	bool isHumanPlayer() { return this->humanPlayer; }
+	bool isWhiteSide();
+	bool isHumanPlayer();
 };

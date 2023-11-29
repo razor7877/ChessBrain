@@ -1,5 +1,5 @@
 #include "game/game.hpp"
-#include <pieces/king.hpp>
+#include "pieces/king.hpp"
 
 Game::Game()
 {
@@ -10,6 +10,27 @@ Game::Game(Player p1, Player p2)
 {
 	players[0] = p1;
 	players[1] = p2;
+
+	board.resetBoard();
+
+	if (players[0].isWhiteSide())
+		this->currentTurn = players[0];
+	else
+		this->currentTurn = players[1];
+
+	movesPlayed.clear();
+}
+
+void Game::initialize()
+{
+	board.resetBoard();
+
+	if (players[0].isWhiteSide())
+		this->currentTurn = players[0];
+	else
+		this->currentTurn = players[1];
+
+	movesPlayed.clear();
 }
 
 bool Game::playerMove(Player player, uint8_t startX, uint8_t startY, uint8_t endX, uint8_t endY)
@@ -17,8 +38,11 @@ bool Game::playerMove(Player player, uint8_t startX, uint8_t startY, uint8_t end
 	Spot startBox = board.getSpot(startX, startY);
 	Spot endBox = board.getSpot(endX, endY);
 	Move move = Move(player, startBox, endBox);
+
 	return this->makeMove(move, player);
 }
+
+bool Game::isEnd() { return this->status != GameStatus::ACTIVE; }
 
 bool Game::makeMove(Move move, Player player)
 {

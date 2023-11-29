@@ -20,6 +20,8 @@ class Game
 public:
 	Game();
 	Game(Player p1, Player p2);
+	void initialize();
+	bool isEnd();
 	bool playerMove(Player player, uint8_t startX, uint8_t startY, uint8_t endX, uint8_t endY);
 
 private:
