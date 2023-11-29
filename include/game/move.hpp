@@ -10,6 +10,9 @@ public:
 	Move(Player player, Spot start, Spot end);
 	bool isCastlingMove();
 	void setCastlingMove(bool castlingMove);
+	Spot getStart();
+	Spot getEnd();
+	void setPieceKilled(Piece* piece);
 
 private:
 	Player player;
