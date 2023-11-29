@@ -1,5 +1,4 @@
-#ifndef BOARD_HPP
-#define BOARD_HPP
+#pragma once
 #include "game/spot.hpp"
 
 class Spot;
@@ -15,11 +14,10 @@ public:
 	void dumpBoardToConsole();
 	void showBoardToConsole();
 	// Helper function to match actual x,y coords to the corresponding spot in the array
-	Spot getSpot(int x, int y);
+	Spot getSpot(uint8_t x, uint8_t y);
 
 private:
 	// A two dimensional array containing the spots
 	// It's a row major array, the first index selects the row, the second one select the column
 	Spot** boxes;
 };
-#endif

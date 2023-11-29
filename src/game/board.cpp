@@ -126,7 +126,7 @@ void Board::showBoardToConsole()
 		std::string row = "";
 		for (int y = 0; y < 8; y++)
 		{
-			Spot spot = this->getSpot(y, x);
+			Spot spot = this->boxes[x][y];
 			if (spot.piece == nullptr)
 			{
 				row += "- ";
@@ -141,7 +141,7 @@ void Board::showBoardToConsole()
 	}
 }
 
-Spot Board::getSpot(int x, int y)
+Spot Board::getSpot(uint8_t x, uint8_t y)
 {
 	return this->boxes[y][x];
 }

@@ -1,5 +1,4 @@
-#ifndef SPOT_HPP
-#define SPOT_HPP
+#pragma once
 #include "pieces/piece.hpp"
 
 class Piece;
@@ -13,4 +12,3 @@ public:
 	Spot();
 	Spot(Piece* piece, int x, int y);
 };
-#endif

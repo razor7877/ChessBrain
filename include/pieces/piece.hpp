@@ -1,5 +1,4 @@
-#ifndef PIECE_HPP
-#define PIECE_HPP
+#pragma once
 #include <map>
 #include <string>
 
@@ -38,4 +37,3 @@ private:
 	bool killed = false;
 	bool white = false;
 };
-#endif
