@@ -8,15 +8,18 @@ class Spot;
 class Board
 {
 public:
-	// A two dimensional array containing the spots
-	// It's a row major array, the first index selects the row, the second one select the column
-	Spot** boxes;
-
 	Board();
 	~Board();
 	// Resets the board to it's starting state
 	void resetBoard();
 	void dumpBoardToConsole();
+	void showBoardToConsole();
+	// Helper function to match actual x,y coords to the corresponding spot in the array
 	Spot getSpot(int x, int y);
+
+private:
+	// A two dimensional array containing the spots
+	// It's a row major array, the first index selects the row, the second one select the column
+	Spot** boxes;
 };
 #endif

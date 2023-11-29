@@ -48,22 +48,22 @@ void Board::resetBoard()
 	this->boxes[6][7] = Spot(&Pawn(false), 8, 7);
 
 	// White pieces
-	this->boxes[1][0] = Spot(&Rook(true), 1, 1);
-	this->boxes[1][1] = Spot(&Knight(true), 2, 1);
-	this->boxes[1][2] = Spot(&Bishop(true), 3, 1);
-	this->boxes[1][3] = Spot(&Queen(true), 4, 1);
-	this->boxes[1][4] = Spot(&King(true), 5, 1);
-	this->boxes[1][5] = Spot(&Bishop(true), 6, 1);
-	this->boxes[1][6] = Spot(&Knight(true), 7, 1);
-	this->boxes[1][7] = Spot(&Rook(true), 8, 1);
-	this->boxes[0][0] = Spot(&Pawn(true), 1, 2);
-	this->boxes[0][1] = Spot(&Pawn(true), 2, 2);
-	this->boxes[0][2] = Spot(&Pawn(true), 3, 2);
-	this->boxes[0][3] = Spot(&Pawn(true), 4, 2);
-	this->boxes[0][4] = Spot(&Pawn(true), 5, 2);
-	this->boxes[0][5] = Spot(&Pawn(true), 6, 2);
-	this->boxes[0][6] = Spot(&Pawn(true), 7, 2);
-	this->boxes[0][7] = Spot(&Pawn(true), 8, 2);
+	this->boxes[0][0] = Spot(&Rook(true), 1, 1);
+	this->boxes[0][1] = Spot(&Knight(true), 2, 1);
+	this->boxes[0][2] = Spot(&Bishop(true), 3, 1);
+	this->boxes[0][3] = Spot(&Queen(true), 4, 1);
+	this->boxes[0][4] = Spot(&King(true), 5, 1);
+	this->boxes[0][5] = Spot(&Bishop(true), 6, 1);
+	this->boxes[0][6] = Spot(&Knight(true), 7, 1);
+	this->boxes[0][7] = Spot(&Rook(true), 8, 1);
+	this->boxes[1][0] = Spot(&Pawn(true), 1, 2);
+	this->boxes[1][1] = Spot(&Pawn(true), 2, 2);
+	this->boxes[1][2] = Spot(&Pawn(true), 3, 2);
+	this->boxes[1][3] = Spot(&Pawn(true), 4, 2);
+	this->boxes[1][4] = Spot(&Pawn(true), 5, 2);
+	this->boxes[1][5] = Spot(&Pawn(true), 6, 2);
+	this->boxes[1][6] = Spot(&Pawn(true), 7, 2);
+	this->boxes[1][7] = Spot(&Pawn(true), 8, 2);
 
 	// Fill up the remaining board with empty spots
 	for (int x = 2; x < 6; x++)
@@ -74,7 +74,8 @@ void Board::resetBoard()
 		}
 	}
 
-	this->dumpBoardToConsole();
+	//this->dumpBoardToConsole();
+	this->showBoardToConsole();
 }
 
 void Board::dumpBoardToConsole()
@@ -85,6 +86,7 @@ void Board::dumpBoardToConsole()
 		{
 			Spot spot = this->boxes[x][y];
 			std::string type = "Empty";
+			// Make sure this is not an empty spot
 			if (spot.piece != nullptr)
 			{
 				switch (spot.piece->getType())
@@ -114,6 +116,28 @@ void Board::dumpBoardToConsole()
 			}
 			printf("Spot at (%d,%d): adr %x name %s\n", spot.x, spot.y, (int)spot.piece, type.c_str());
 		}
+	}
+}
+
+void Board::showBoardToConsole()
+{
+	for (int x = 0; x < 8; x++)
+	{
+		std::string row = "";
+		for (int y = 0; y < 8; y++)
+		{
+			Spot spot = this->getSpot(y, x);
+			if (spot.piece == nullptr)
+			{
+				row += "- ";
+			}
+			else
+			{
+				PieceType type = spot.piece->getType();
+				row += Piece::enumToString.at(type) + " ";
+			}
+		}
+		std::cout << row << "\n";
 	}
 }
 

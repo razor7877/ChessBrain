@@ -1,5 +1,8 @@
 #ifndef PIECE_HPP
 #define PIECE_HPP
+#include <map>
+#include <string>
+
 #include "game/board.hpp"
 #include "game/spot.hpp"
 
@@ -20,6 +23,8 @@ enum class PieceType
 class Piece
 {
 public:
+	const static std::map<PieceType, std::string> enumToString;
+
 	Piece(bool white);
 	bool isWhite();
 	void setWhite(bool white);
