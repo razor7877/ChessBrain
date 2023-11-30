@@ -8,6 +8,9 @@ uniform sampler2D texture1;
 
 void main()
 {
-	FragColor = vec4(0.5, TexCoord.x, TexCoord.y, 1.0);
-	FragColor = texture(texture1, TexCoord);
+	vec4 texColor = texture(texture1, TexCoord);
+	// Discard fragment if texture is transparent at these coords
+	if (texColor.a < 0.1)
+		discard;
+	FragColor = texColor;
 }

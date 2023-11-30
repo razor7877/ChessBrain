@@ -75,6 +75,8 @@ int main()
 		return -1;
 	}
 
+	glEnable(GL_BLEND);
+
 	// Creates a quad that is used to draw the board
 	float vertices[] = {
 		-1.0f, 1.0f, 0.0f,
@@ -110,7 +112,8 @@ int main()
 	glEnableVertexAttribArray(0);
 
 	// One pawn
-	Texture pawn = Texture("C:/Users/kylia/Desktop/GitHub/ChessBrain/images/chess_piece_2_black_bishop.png");
+	// Image from https://opengameart.org/content/chess-pieces-and-board-squares
+	Texture pawn = Texture("C:/Users/kylia/Desktop/GitHub/ChessBrain/images/b_bishop_png_1024px.png");
 	float pawnQuad[] = {
 		-1.0f, 1.0f, 0.0f, // Top left
 		1.0f, 1.0f, 0.0f, // Top right
@@ -155,8 +158,10 @@ int main()
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(1);
 
+	glm::mat4 pawnModelMatrix = glm::mat4(1.0f);
+
 	pieceShader.use();
-	glBindTexture(GL_TEXTURE_2D, pawn.texID);
+	pieceShader.setMat4("model", pawnModelMatrix);
 
 	HumanPlayer p1 = HumanPlayer(true);
 	HumanPlayer p2 = HumanPlayer(false);
@@ -174,6 +179,7 @@ int main()
 
 		pieceShader.use();
 		glBindVertexArray(pawnVAO);
+		glBindTexture(GL_TEXTURE_2D, pawn.texID);
 		glDrawArrays(GL_TRIANGLES, 0, 6);
 
 		// Swap new frame and poll GLFW for inputs
