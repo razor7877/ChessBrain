@@ -87,12 +87,15 @@ int main()
 	};
 
 	// Create the shader for the board
-	Shader shader = Shader(
-		"C:/Users/kylia/Desktop/GitHub/ChessBrain/src/shaders/default.vert",
-		"C:/Users/kylia/Desktop/GitHub/ChessBrain/src/shaders/default.frag"
+	Shader boardShader = Shader(
+		"C:/Users/kylia/Desktop/GitHub/ChessBrain/src/shaders/board.vert",
+		"C:/Users/kylia/Desktop/GitHub/ChessBrain/src/shaders/board.frag"
 	);
 
-	Texture pawn = Texture("C:/Users/kylia/Desktop/GitHub/ChessBrain/images/chess_piece_2_black_bishop.png");
+	Shader pieceShader = Shader(
+		"C:/Users/kylia/Desktop/GitHub/ChessBrain/src/shaders/piece.vert",
+		"C:/Users/kylia/Desktop/GitHub/ChessBrain/src/shaders/piece.frag"
+	);
 
 	// Board
 	unsigned int VAO, VBO;
@@ -106,6 +109,55 @@ int main()
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
 
+	// One pawn
+	Texture pawn = Texture("C:/Users/kylia/Desktop/GitHub/ChessBrain/images/chess_piece_2_black_bishop.png");
+	float pawnQuad[] = {
+		-1.0f, 1.0f, 0.0f, // Top left
+		1.0f, 1.0f, 0.0f, // Top right
+		-1.0f, -1.0f, 0.0f, // Bottom left
+
+		1.0f, 1.0f, 0.0f, // Top right
+		1.0f, -1.0f, 0.0f, // Bottom right
+		-1.0f, -1.0f, 0.0f, // Bottom left
+	};
+	float pawnTexCoords[] = {
+		0.0f, 1.0f, // Top left
+		1.0f, 1.0f, // Top right
+		0.0f, 0.0f, // Bottom left
+
+		1.0f, 1.0f, // Top right
+		1.0f, 0.0f, // Bottom right
+		0.0f, 0.0f, // Bottom left
+	};
+
+	unsigned int pawnVAO, pawnVBO, pawnTexCoordsBO;
+	// Generate VAO and VBO and bind them
+	glGenVertexArrays(1, &pawnVAO);
+	glGenBuffers(1, &pawnVBO);
+
+	glBindVertexArray(pawnVAO);
+
+	// Send vertices
+	glBindBuffer(GL_ARRAY_BUFFER, pawnVBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+	// Enable layout 0 input in shader
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+	glEnableVertexAttribArray(0);
+
+	// Send tex coords
+	glGenBuffers(1, &pawnTexCoordsBO);
+
+	glBindBuffer(GL_ARRAY_BUFFER, pawnTexCoordsBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(pawnTexCoords), pawnTexCoords, GL_STATIC_DRAW);
+
+	// Enable layout 1 input in shader
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
+	glEnableVertexAttribArray(1);
+
+	pieceShader.use();
+	glBindTexture(GL_TEXTURE_2D, pawn.texID);
+
 	HumanPlayer p1 = HumanPlayer(true);
 	HumanPlayer p2 = HumanPlayer(false);
 	Game game = Game(p1, p2);
@@ -116,8 +168,12 @@ int main()
 		glClearColor(1.0f, 0.5f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		shader.use();
+		boardShader.use();
 		glBindVertexArray(VAO);
+		glDrawArrays(GL_TRIANGLES, 0, 6);
+
+		pieceShader.use();
+		glBindVertexArray(pawnVAO);
 		glDrawArrays(GL_TRIANGLES, 0, 6);
 
 		// Swap new frame and poll GLFW for inputs
