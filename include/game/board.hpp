@@ -7,13 +7,29 @@ class Spot;
 class Board
 {
 public:
+	/// <summary>
+	/// Creates a new board, and sets up the default pieces for a chess game
+	/// </summary>
 	Board();
 	~Board();
-	// Resets the board to it's starting state
+	/// <summary>
+	/// Resets the board to it's starting state
+	/// </summary>
 	void resetBoard();
+	/// <summary>
+	/// Dumps the content of the board to the console (address of each spot and name of any piece there)
+	/// </summary>
 	void dumpBoardToConsole();
+	/// <summary>
+	/// Prints a grid of the current board status to the console
+	/// </summary>
 	void showBoardToConsole();
-	// Helper function to match actual x,y coords to the corresponding spot in the array
+	/// <summary>
+	/// Returns the spot at the given x,y coordinates
+	/// </summary>
+	/// <param name="x">The X coordinate</param>
+	/// <param name="y">The Y coordinate</param>
+	/// <returns></returns>
 	Spot getSpot(uint8_t x, uint8_t y);
 
 private:

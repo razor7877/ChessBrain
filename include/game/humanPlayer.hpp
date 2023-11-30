@@ -6,5 +6,4 @@ class HumanPlayer : public virtual Player
 {
 public:
 	HumanPlayer(bool whiteSide);
-	Move getNextMove();
 };

@@ -11,14 +11,10 @@ Game::Game(Player p1, Player p2)
 	players[0] = p1;
 	players[1] = p2;
 
-	board.resetBoard();
-
 	if (players[0].isWhiteSide())
 		this->currentTurn = players[0];
 	else
 		this->currentTurn = players[1];
-
-	movesPlayed.clear();
 }
 
 void Game::initialize()
