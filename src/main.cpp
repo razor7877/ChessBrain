@@ -1,5 +1,7 @@
 #include <iostream>
 
+#include <glm/glm.hpp>
+#include <glm/ext/matrix_transform.hpp>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <graphics/stb_image.h>
@@ -158,7 +160,11 @@ int main()
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(1);
 
+	float x = -7;
+	float y = -5;
 	glm::mat4 pawnModelMatrix = glm::mat4(1.0f);
+	pawnModelMatrix = glm::scale(pawnModelMatrix, glm::vec3(1.0f / 8.0f));
+	pawnModelMatrix = glm::translate(pawnModelMatrix, glm::vec3(x, y, 0.0f));
 
 	pieceShader.use();
 	pieceShader.setMat4("model", pawnModelMatrix);
