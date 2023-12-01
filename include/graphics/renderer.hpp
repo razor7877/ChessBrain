@@ -10,6 +10,7 @@
 #include "graphics/sprite.hpp"
 #include "pieces/piece.hpp"
 
+// TODO : Use same quad VBO for all sprites, only change model matrix
 class Renderer
 {
 public:
@@ -19,9 +20,12 @@ public:
 	void drawFrame();
 
 private:
+	unsigned int boardVAO;
+	unsigned int boardVBO;
 	std::vector<Sprite*> sprites;
 	std::map<PieceType, Texture*> whitePieceTextures;
 	std::map<PieceType, Texture*> blackPieceTextures;
 
+	Shader* boardShader;
 	Shader* pieceShader;
 };

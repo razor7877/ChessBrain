@@ -7,9 +7,9 @@
 struct Sprite
 {
 	// Vertices for a quad
-	const static float quadVerts[];
+	const static float quadVerts[18];
 	// Tex coords for drawing a texture to a quad
-	const static float quadTexCoords[];
+	const static float quadTexCoords[12];
 	unsigned int VAO;
 	unsigned int VBO;
 	unsigned int texCoordsBO;

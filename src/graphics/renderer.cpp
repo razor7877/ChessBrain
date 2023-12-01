@@ -9,13 +9,6 @@ Renderer::Renderer()
 	// Enable transparency
 	glEnable(GL_BLEND);
 
-	this->pieceShader = new Shader(
-		"C:/Users/kylia/Desktop/GitHub/ChessBrain/src/shaders/piece.vert",
-		"C:/Users/kylia/Desktop/GitHub/ChessBrain/src/shaders/piece.frag"
-	);
-
-	this->pieceShader->use();
-
 	// Images from https://opengameart.org/content/chess-pieces-and-board-squares
 	whitePieceTextures = {
 		{ PieceType::PAWN, new Texture("C:/Users/kylia/Desktop/GitHub/ChessBrain/images/w_pawn_png_1024px.png", true) },
@@ -34,6 +27,29 @@ Renderer::Renderer()
 		{ PieceType::KNIGHT, new Texture("C:/Users/kylia/Desktop/GitHub/ChessBrain/images/b_knight_png_1024px.png", true) },
 		{ PieceType::ROOK, new Texture("C:/Users/kylia/Desktop/GitHub/ChessBrain/images/b_rook_png_1024px.png", true) },
 	};
+
+	// Create the shader for the board
+	this->boardShader = new Shader(
+		"C:/Users/kylia/Desktop/GitHub/ChessBrain/src/shaders/board.vert",
+		"C:/Users/kylia/Desktop/GitHub/ChessBrain/src/shaders/board.frag"
+	);
+
+	// Creates the board
+	glGenVertexArrays(1, &boardVAO);
+	glGenBuffers(1, &boardVBO);
+
+	glBindVertexArray(boardVAO);
+	glBindBuffer(GL_ARRAY_BUFFER, boardVBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(Sprite::quadVerts), Sprite::quadVerts, GL_STATIC_DRAW);
+
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+	glEnableVertexAttribArray(0);
+
+	// Create the shader for drawing pieces
+	this->pieceShader = new Shader(
+		"C:/Users/kylia/Desktop/GitHub/ChessBrain/src/shaders/piece.vert",
+		"C:/Users/kylia/Desktop/GitHub/ChessBrain/src/shaders/piece.frag"
+	);
 }
 
 Renderer::~Renderer()
@@ -79,8 +95,13 @@ Sprite* Renderer::addPiece(Piece* piece, uint8_t x, uint8_t y)
 
 void Renderer::drawFrame()
 {
-	this->pieceShader->use();
+	// Draw the board
+	this->boardShader->use();
+	glBindVertexArray(this->boardVAO);
+	glDrawArrays(GL_TRIANGLES, 0, 6);
 
+	// Draw all chess pieces sprites
+	this->pieceShader->use();
 	for (Sprite* sprite : this->sprites)
 	{
 		glBindVertexArray(sprite->VAO);
