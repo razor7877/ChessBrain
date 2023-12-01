@@ -14,6 +14,8 @@
 #include "game/player.hpp"
 #include <pieces/pawn.hpp>
 
+constexpr float caseSize = 1.0f / 8.0f;
+
 // Startup resolution
 const int WINDOW_WIDTH = 600;
 const int WINDOW_HEIGHT = 600;
@@ -33,9 +35,28 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	}
 }
 
+void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
+{
+	if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS)
+	{
+		double xpos, ypos;
+		glfwGetCursorPos(window, &xpos, &ypos);
+		// Get x,y position as a 0 to 1 ratio relative to screen size
+		xpos /= windowWidth;
+		// GLFW coordinates starts from the top left corner but we want to start from the bottom left
+		// so we calculate 1 minus the ratio
+		ypos = 1 - (ypos / windowHeight);
+		int xcase = xpos / caseSize;
+		int ycase = ypos / caseSize;
+		std::cout << "Click at x,y: " << xcase << "," << ycase << "\n";
+	}
+}
+
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
 	std::cout << "Resized window\n";
+	windowWidth = width;
+	windowHeight = height;
 	glViewport(0, 0, width, height);
 }
 
@@ -61,6 +82,7 @@ int setupGlfwContext()
 	// Set callback functions for window resizing and handling input
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 	glfwSetKeyCallback(window, key_callback);
+	glfwSetMouseButtonCallback(window, mouse_button_callback);
 	
 	// Check if GLAD loaded successfully
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))

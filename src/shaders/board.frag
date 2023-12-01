@@ -4,6 +4,8 @@ in vec3 position;
 
 out vec4 FragColor;
 
+uniform vec2 activeCase;
+
 void main()
 {
 	// Define the checkerboard pattern
