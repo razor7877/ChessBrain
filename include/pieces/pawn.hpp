@@ -7,4 +7,7 @@ public:
 	Pawn(bool white);
 	virtual bool canMove(Board* board, Spot* start, Spot* end);
 	virtual PieceType getType();
+
+private:
+	bool firstMove = true;
 };

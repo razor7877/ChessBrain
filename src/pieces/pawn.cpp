@@ -14,9 +14,26 @@ bool Pawn::canMove(Board* board, Spot* start, Spot* end)
 	if (start->x != end->x)
 		return false;
 
-	// If not moving by one case forward
-	if (abs(start->y - end->y) != 1)
-		return false;
+	// White pawn can only move forward
+	if (this->isWhite())
+	{
+		// If not first move and not moving by one case forward
+		// or first move but trying to move more than 2 forward
+		if ((!firstMove && (end->y - start->y) != 1) ||
+			(end->y - start->y) > 2)
+			return false;
+	}
+	// Black pawn can only move backward
+	else
+	{
+		// If not first move and not moving by one case backward
+		// or first move but trying to move more than 2 backward
+		if ((!firstMove && (start->y - end->y) != 1) ||
+			(start->y - end->y) > 2)
+			return false;
+	}
+
+	this->firstMove = false;
 
 	return true;
 }
