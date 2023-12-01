@@ -1,8 +1,8 @@
+#include "graphics/renderer.hpp"
+
 #ifdef DEBUG_MODE
 #include <iostream>
 #endif
-
-#include "graphics/renderer.hpp"
 
 Renderer::Renderer()
 {
@@ -77,9 +77,6 @@ Sprite* Renderer::addPiece(Piece* piece, uint8_t x, uint8_t y)
 	Sprite* pawnSprite = new Sprite(pieceTexture);
 	pawnSprite->moveSprite(x, y);
 
-#ifdef DEBUG_MODE
-	std::cout << "Sprite: " << pawnSprite << "mapped at: " << mappedX << "," << mappedY << "\n";
-#endif
 	this->sprites.push_back(pawnSprite);
 
 	return pawnSprite;

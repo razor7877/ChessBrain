@@ -10,6 +10,10 @@ bool Pawn::canMove(Board* board, Spot* start, Spot* end)
 	if (end->piece != nullptr && end->piece->isWhite() == this->isWhite())
 		return false;
 
+	// Can't move left/right
+	if (start->x != end->x)
+		return false;
+
 	// If not moving by one case forward
 	if (abs(start->y - end->y) != 1)
 		return false;

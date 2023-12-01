@@ -33,10 +33,12 @@ Game::Game(Player* p1, Player* p2)
 Game::~Game()
 {
 	delete renderer;
-	delete[] players;
 	delete board;
 	delete currentTurn;
 	delete lastSelectedSpot;
+
+	for (Player* player : this->players)
+		delete player;
 
 	for (Move* move : this->movesPlayed)
 		delete move;
@@ -98,6 +100,9 @@ void Game::drawFrame()
 
 void Game::sendPlayerInput(glm::vec2 activeCase)
 {
+#ifdef DEBUG_MODE
+	std::cout << "Active case: " << activeCase.x << "," << activeCase.y << "\n";
+#endif
 	// Get the spot that was selected
 	Spot* spot = board->getSpot(activeCase);
 

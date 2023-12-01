@@ -70,9 +70,11 @@ void Board::resetBoard()
 	{
 		for (int y = 0; y < 8; y++)
 		{
-			this->boxes[x][y] = Spot(nullptr, x + 1, y + 1);
+			this->boxes[x][y] = Spot(nullptr, y + 1, x + 1);
 		}
 	}
+
+	this->showBoardToConsole();
 }
 
 void Board::dumpBoardToConsole()
@@ -147,7 +149,10 @@ Spot* Board::getSpot(uint8_t x, uint8_t y)
 
 Spot* Board::getSpot(glm::vec2 pos)
 {
-	std::cout << "float x,y: " << pos.x << "," << pos.y << "\n";
-	std::cout << "casted x,y: " << (int)pos.x << "," << (int)pos.y << "\n";
+	Spot s = this->boxes[(int)pos.y][(int)pos.x];
+#ifdef DEBUG_MODE
+	std::cout << "getSpot() call with pos: " << pos.x << "," << pos.y << "\n";
+	std::cout << "Returns spot with pos: " << s.x << "," << s.y << "\n";
+#endif
 	return &this->boxes[(int)pos.y][(int)pos.x];
 }

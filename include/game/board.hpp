@@ -1,6 +1,7 @@
 #pragma once
 #include <glm/glm.hpp>
 
+#include "main.hpp"
 #include "game/spot.hpp"
 
 class Spot;
