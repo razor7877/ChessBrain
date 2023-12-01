@@ -25,12 +25,12 @@ Renderer::Renderer()
 	};
 
 	blackPieceTextures = {
-		{ PieceType::PAWN, new Texture("C:/Users/kylia/Desktop/GitHub/ChessBrain/images/b_pawn_png_1024px.png") },
-		{ PieceType::BISHOP, new Texture("C:/Users/kylia/Desktop/GitHub/ChessBrain/images/b_bishop_png_1024px.png") },
-		{ PieceType::KING, new Texture("C:/Users/kylia/Desktop/GitHub/ChessBrain/images/b_king_png_1024px.png") },
-		{ PieceType::QUEEN, new Texture("C:/Users/kylia/Desktop/GitHub/ChessBrain/images/b_queen_png_1024px.png") },
-		{ PieceType::KNIGHT, new Texture("C:/Users/kylia/Desktop/GitHub/ChessBrain/images/b_knight_png_1024px.png") },
-		{ PieceType::ROOK, new Texture("C:/Users/kylia/Desktop/GitHub/ChessBrain/images/b_rook_png_1024px.png") },
+		{ PieceType::PAWN, new Texture("C:/Users/kylia/Desktop/GitHub/ChessBrain/images/b_pawn_png_1024px.png", true) },
+		{ PieceType::BISHOP, new Texture("C:/Users/kylia/Desktop/GitHub/ChessBrain/images/b_bishop_png_1024px.png", true) },
+		{ PieceType::KING, new Texture("C:/Users/kylia/Desktop/GitHub/ChessBrain/images/b_king_png_1024px.png", true) },
+		{ PieceType::QUEEN, new Texture("C:/Users/kylia/Desktop/GitHub/ChessBrain/images/b_queen_png_1024px.png", true) },
+		{ PieceType::KNIGHT, new Texture("C:/Users/kylia/Desktop/GitHub/ChessBrain/images/b_knight_png_1024px.png", true) },
+		{ PieceType::ROOK, new Texture("C:/Users/kylia/Desktop/GitHub/ChessBrain/images/b_rook_png_1024px.png", true) },
 	};
 }
 
@@ -61,8 +61,10 @@ Sprite* Renderer::addPiece(Piece* piece, uint8_t x, uint8_t y)
 	// Chess piece coords are x,y between 0-7
 	// After scaling, when translating the piece, bottom left corner becomes -7,-7 (x,y)
 	// and top right corner becomes 7,7 (x,y), thus, we need a way to get the correct translation
-	float mappedX = 7 - (2 * x);
-	float mappedY = 7 - (2 * y);
+	//float mappedX = x > 3 ? (-7 + 2 * x) : (7 - 2 * x);
+	//float mappedY = y > 3 ? (-7 + 2 * y) : (7 - 2 * y);
+	float mappedX = -7 + 2 * x;
+	float mappedY = -7 + 2 * y;
 
 	// Translation is relative to previous scaling
 	pawnSprite->modelMatrix = glm::translate(pawnSprite->modelMatrix, glm::vec3(mappedX, mappedY, 0.0f));

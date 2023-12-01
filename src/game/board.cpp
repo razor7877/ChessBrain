@@ -121,7 +121,7 @@ void Board::showBoardToConsole()
 	for (int x = 0; x < 8; x++)
 	{
 		std::string row = "";
-		for (int y = 0; y < 2; y++)
+		for (int y = 0; y < 8; y++)
 		{
 			Spot spot = this->boxes[x][y];
 			if (spot.piece == nullptr)
@@ -132,6 +132,8 @@ void Board::showBoardToConsole()
 			{
 				PieceType type = spot.piece->getType();
 				row += Piece::enumToString.at(type) + " ";
+				row += spot.piece->isWhite() ? "wh" : "bl";
+				row += " ";
 			}
 		}
 		std::cout << row << "\n";

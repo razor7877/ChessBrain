@@ -54,6 +54,7 @@ void Game::setupRenderer(Renderer* renderer)
 				
 		}
 	}
+	board.showBoardToConsole();
 }
 
 bool Game::isEnd() { return this->status != GameStatus::ACTIVE; }
