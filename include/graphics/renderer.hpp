@@ -6,16 +6,7 @@
 
 #include "graphics/shader.hpp"
 #include "graphics/texture.hpp"
-
-struct Sprite
-{
-	unsigned int VAO;
-	unsigned int VBO;
-	unsigned int texCoordsBO;
-	Texture* tex;
-	glm::mat4 modelMatrix;
-	~Sprite();
-};
+#include "graphics/sprite.hpp"
 
 class Renderer
 {
@@ -25,10 +16,6 @@ public:
 	void drawFrame();
 
 private:
-	// Vertices for a quad
-	const static float quadVerts[];
-	// Tex coords for drawing a texture to a quad
-	const static float quadTexCoords[];
 	std::vector<Sprite*> sprites;
 
 	Shader* pieceShader;
