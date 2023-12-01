@@ -2,6 +2,7 @@
 
 #include <glm/ext/matrix_transform.hpp>
 
+#include "main.hpp"
 #include "graphics/sprite.hpp"
 
 const float Sprite::quadVerts[] = {
@@ -51,6 +52,20 @@ Sprite::Sprite(Texture* texture)
 	glEnableVertexAttribArray(1);
 
 	this->modelMatrix = glm::mat4(1.0f);
-	this->modelMatrix = glm::scale(this->modelMatrix, glm::vec3(1.0f / 8.0f));
+	this->modelMatrix = glm::scale(this->modelMatrix, glm::vec3(caseSize));
 	this->texture = texture;
+}
+
+void Sprite::moveSprite(uint8_t x, uint8_t y)
+{
+	// Chess piece coords are x,y between 0-7
+	// After scaling, when translating the piece, bottom left corner becomes -7,-7 (x,y)
+	// and top right corner becomes 7,7 (x,y), thus, we need a way to get the correct translation
+	float mappedX = -7 + 2 * x;
+	float mappedY = -7 + 2 * y;
+
+	this->modelMatrix = glm::mat4(1.0f);
+	this->modelMatrix = glm::scale(this->modelMatrix, glm::vec3(caseSize));
+	// Translation is relative to previous scaling
+	this->modelMatrix = glm::translate(this->modelMatrix, glm::vec3(mappedX, mappedY, 0.0f));
 }

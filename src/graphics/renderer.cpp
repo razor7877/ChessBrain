@@ -75,15 +75,7 @@ Sprite* Renderer::addPiece(Piece* piece, uint8_t x, uint8_t y)
 		pieceTexture = this->blackPieceTextures.at(piece->getType());
 
 	Sprite* pawnSprite = new Sprite(pieceTexture);
-
-	// Chess piece coords are x,y between 0-7
-	// After scaling, when translating the piece, bottom left corner becomes -7,-7 (x,y)
-	// and top right corner becomes 7,7 (x,y), thus, we need a way to get the correct translation
-	float mappedX = -7 + 2 * x;
-	float mappedY = -7 + 2 * y;
-
-	// Translation is relative to previous scaling
-	pawnSprite->modelMatrix = glm::translate(pawnSprite->modelMatrix, glm::vec3(mappedX, mappedY, 0.0f));
+	pawnSprite->moveSprite(x, y);
 
 #ifdef DEBUG_MODE
 	std::cout << "Sprite: " << pawnSprite << "mapped at: " << mappedX << "," << mappedY << "\n";

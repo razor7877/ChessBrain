@@ -6,6 +6,7 @@
 #include <GLFW/glfw3.h>
 #include <graphics/stb_image.h>
 
+#include "main.hpp"
 #include "graphics/renderer.hpp"
 #include "graphics/texture.hpp"
 #include "graphics/shader.hpp"
@@ -14,8 +15,6 @@
 
 // Enable this for more verbose information on what is happening
 #define DEBUG_MODE
-
-constexpr float caseSize = 1.0f / 8.0f;
 
 // Startup resolution
 const int WINDOW_WIDTH = 600;
@@ -114,37 +113,6 @@ int main()
 		return -1;
 	}
 
-	glEnable(GL_BLEND);
-
-	// Create the shader for the board
-	Shader boardShader = Shader(
-		"C:/Users/kylia/Desktop/GitHub/ChessBrain/src/shaders/board.vert",
-		"C:/Users/kylia/Desktop/GitHub/ChessBrain/src/shaders/board.frag"
-	);
-
-	// Creates a quad that is used to draw the board
-	float vertices[] = {
-		-1.0f, 1.0f, 0.0f,
-		1.0f, 1.0f, 0.0f,
-		-1.0f, -1.0f, 0.0f,
-
-		1.0f, 1.0f, 0.0f,
-		1.0f, -1.0f, 0.0f,
-		-1.0f, -1.0f, 0.0f,
-	};
-	
-	// Board
-	unsigned int VAO, VBO;
-	glGenVertexArrays(1, &VAO);
-	glGenBuffers(1, &VBO);
-
-	glBindVertexArray(VAO);
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-	glEnableVertexAttribArray(0);
-
 	HumanPlayer p1 = HumanPlayer(true);
 	HumanPlayer p2 = HumanPlayer(false);
 	Game game = Game(p1, p2);
@@ -162,9 +130,9 @@ int main()
 		if (caseUpdate)
 		{
 			caseUpdate = false;
-			boardShader.setVec2("activeCase", activeCase);
+			renderer->boardShader->use().setVec2("activeCase", activeCase);
 		}
-		
+
 		renderer->drawFrame();
 
 		// Swap new frame and poll GLFW for inputs

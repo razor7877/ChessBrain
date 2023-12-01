@@ -16,4 +16,5 @@ struct Sprite
 	Texture* texture;
 	glm::mat4 modelMatrix;
 	Sprite(Texture* texture);
+	void moveSprite(uint8_t x, uint8_t y);
 };
