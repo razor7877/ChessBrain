@@ -17,20 +17,38 @@ bool Pawn::canMove(Board* board, Spot* start, Spot* end)
 	// White pawn can only move forward
 	if (this->isWhite())
 	{
+		int distY = end->y - start->y;
 		// If not first move and not moving by one case forward
 		// or first move but trying to move more than 2 forward
-		if ((!firstMove && (end->y - start->y) != 1) ||
-			(end->y - start->y) > 2)
+		if ((!firstMove && (distY) != 1) ||
+			distY > 2)
 			return false;
+
+		// If jumping two spots, make sure first spot is empty
+		if (distY == 2)
+		{
+			Spot* nextSpot = board->getSpot(start->x - 1, start->y);
+			if (nextSpot->piece != nullptr)
+				return false;
+		}
 	}
 	// Black pawn can only move backward
 	else
 	{
+		int distY = start->y - end->y;
 		// If not first move and not moving by one case backward
 		// or first move but trying to move more than 2 backward
-		if ((!firstMove && (start->y - end->y) != 1) ||
-			(start->y - end->y) > 2)
+		if ((!firstMove && distY != 1) ||
+			distY > 2)
 			return false;
+
+		// If jumping two spots, make sure first spot is empty
+		if (distY == 2)
+		{
+			Spot* nextSpot = board->getSpot(start->x - 1, start->y - 2);
+			if (nextSpot->piece != nullptr)
+				return false;
+		}
 	}
 
 	this->firstMove = false;

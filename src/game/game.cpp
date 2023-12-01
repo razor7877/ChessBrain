@@ -19,6 +19,8 @@ Game::Game(Player* p1, Player* p2)
 	this->board = new Board();
 	this->renderer = new Renderer();
 	this->setupRenderer();
+	// Show no active case on the board at first
+	this->renderer->boardShader->use().setVec2("activeCase", glm::vec2(-1.0f));
 	this->lastSelectedSpot = nullptr;
 
 	this->players[0] = p1;
@@ -211,6 +213,9 @@ bool Game::makeMove(Move* move, Player* player)
 	Piece* destPiece = end->piece;
 	if (destPiece != nullptr)
 	{
+#ifdef DEBUG_MODE
+		std::cout << "Successful kill on color: " << destPiece->isWhite() << "\n";
+#endif
 		destPiece->setKilled(true);
 		move->setPieceKilled(destPiece);
 	}
