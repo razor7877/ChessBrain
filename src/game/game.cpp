@@ -1,3 +1,5 @@
+#include "main.hpp"
+
 #ifdef DEBUG_MODE
 #include <iostream>
 #endif
@@ -12,6 +14,8 @@ Game::Game()
 
 Game::Game(Player p1, Player p2)
 {
+	lastSelectedSpot = nullptr;
+
 	players[0] = p1;
 	players[1] = p2;
 
@@ -19,6 +23,11 @@ Game::Game(Player p1, Player p2)
 		this->currentTurn = players[0];
 	else
 		this->currentTurn = players[1];
+}
+
+Game::~Game()
+{
+	delete lastSelectedSpot;
 }
 
 void Game::initialize()
@@ -33,10 +42,12 @@ void Game::initialize()
 	movesPlayed.clear();
 }
 
+bool Game::isEnd() { return this->status != GameStatus::ACTIVE; }
+
 bool Game::playerMove(Player player, uint8_t startX, uint8_t startY, uint8_t endX, uint8_t endY)
 {
-	Spot startBox = board.getSpot(startX, startY);
-	Spot endBox = board.getSpot(endX, endY);
+	Spot* startBox = board.getSpot(startX, startY);
+	Spot* endBox = board.getSpot(endX, endY);
 	Move move = Move(player, startBox, endBox);
 
 	return this->makeMove(move, player);
@@ -44,17 +55,19 @@ bool Game::playerMove(Player player, uint8_t startX, uint8_t startY, uint8_t end
 
 void Game::setupRenderer(Renderer* renderer)
 {
+	this->renderer = renderer;
+
 	for (int x = 0; x < 8; x++)
 	{
 		for (int y = 0; y < 8; y++)
 		{
-			Spot spot = this->board.getSpot(x, y);
-			if (spot.piece != nullptr)
+			Spot* spot = this->board.getSpot(x, y);
+			if (spot->piece != nullptr)
 			{
 #ifdef DEBUG_MODE
 				std::cout << "Piece at " << x << " " << y << "\n";
 #endif
-				renderer->addPiece(spot.piece, x, y);
+				renderer->addPiece(spot->piece, x, y);
 			}
 				
 		}
@@ -62,14 +75,41 @@ void Game::setupRenderer(Renderer* renderer)
 	board.showBoardToConsole();
 }
 
-bool Game::isEnd() { return this->status != GameStatus::ACTIVE; }
+void Game::sendPlayerInput(glm::vec2 activeCase)
+{
+	// Get the spot that was selected
+	Spot* spot = board.getSpot(activeCase);
+
+	// If clicking again on same spot, cancel selection
+#ifdef DEBUG_MODE
+	std::cout << "Last spot: " << lastSelectedSpot << " | Equals nullptr?: " << (lastSelectedSpot == nullptr) << "\n";
+#endif
+	if (lastSelectedSpot != nullptr && lastSelectedSpot->x == spot->x && lastSelectedSpot->y == spot->y)
+	{
+		lastSelectedSpot = nullptr;
+		this->renderer->boardShader->use().setVec2("activeCase", glm::vec2(-1.0f));
+		return;
+	}
+
+	// If the spot contains a piece
+	if (spot->piece == nullptr)
+		return;
+
+	// If the spot contains a piece corresponding to the current player's turn color
+	if (spot->piece->isWhite() != currentTurn.isWhiteSide())
+		return;
+
+	// Show the selected spot on the board
+	lastSelectedSpot = spot;
+	this->renderer->boardShader->use().setVec2("activeCase", activeCase);
+}
 
 bool Game::makeMove(Move move, Player player)
 {
-	Spot start = move.getStart();
-	Spot end = move.getEnd();
+	Spot* start = move.getStart();
+	Spot* end = move.getEnd();
 
-	Piece* sourcePiece = start.piece;
+	Piece* sourcePiece = start->piece;
 	// Check if there is a piece in this spot
 	if (sourcePiece == nullptr)
 		return false;
@@ -81,13 +121,13 @@ bool Game::makeMove(Move move, Player player)
 	// Make sure the player is playing a piece of the right color
 	if (sourcePiece->isWhite() != player.isWhiteSide())
 		return false;
-
+	/*
 	// Make sure the attempted move is valid
 	if (!sourcePiece->canMove(board, start, end))
-		return false;
+		return false;*/
 
 	// Check if there was a kill
-	Piece* destPiece = end.piece;
+	Piece* destPiece = end->piece;
 	if (destPiece != nullptr)
 	{
 		destPiece->setKilled(true);
@@ -99,10 +139,10 @@ bool Game::makeMove(Move move, Player player)
 	this->movesPlayed.push_back(move);
 
 	// Move piece to the new spot
-	end.piece = sourcePiece;
+	end->piece = sourcePiece;
 
 	// Remove piece from the old spot
-	start.piece = nullptr;
+	start->piece = nullptr;
 
 	if (destPiece != nullptr && destPiece->getType() == PieceType::KING)
 	{

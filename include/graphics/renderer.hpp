@@ -8,7 +8,6 @@
 #include "graphics/shader.hpp"
 #include "graphics/texture.hpp"
 #include "graphics/sprite.hpp"
-#include "game/game.hpp"
 #include "pieces/piece.hpp"
 
 // TODO : Use same quad VBO for all sprites, only change model matrix

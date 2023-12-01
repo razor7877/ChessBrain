@@ -13,9 +13,6 @@
 #include "game/game.hpp"
 #include "game/humanPlayer.hpp"
 
-// Enable this for more verbose information on what is happening
-#define DEBUG_MODE
-
 // Startup resolution
 const int WINDOW_WIDTH = 600;
 const int WINDOW_HEIGHT = 600;
@@ -130,7 +127,7 @@ int main()
 		if (caseUpdate)
 		{
 			caseUpdate = false;
-			renderer->boardShader->use().setVec2("activeCase", activeCase);
+			game.sendPlayerInput(activeCase);
 		}
 
 		renderer->drawFrame();

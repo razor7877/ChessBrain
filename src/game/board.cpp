@@ -140,7 +140,12 @@ void Board::showBoardToConsole()
 	}
 }
 
-Spot Board::getSpot(uint8_t x, uint8_t y)
+Spot* Board::getSpot(uint8_t x, uint8_t y)
 {
-	return this->boxes[y][x];
+	return &this->boxes[y][x];
+}
+
+Spot* Board::getSpot(glm::vec2 pos)
+{
+	return &this->boxes[(int)pos.y][(int)pos.x];
 }

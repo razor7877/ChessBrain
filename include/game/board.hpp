@@ -1,4 +1,6 @@
 #pragma once
+#include <glm/glm.hpp>
+
 #include "game/spot.hpp"
 
 class Spot;
@@ -30,7 +32,8 @@ public:
 	/// <param name="x">The X coordinate</param>
 	/// <param name="y">The Y coordinate</param>
 	/// <returns></returns>
-	Spot getSpot(uint8_t x, uint8_t y);
+	Spot* getSpot(uint8_t x, uint8_t y);
+	Spot* getSpot(glm::vec2 pos);
 
 private:
 	// A two dimensional array containing the spots
