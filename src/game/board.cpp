@@ -147,5 +147,7 @@ Spot* Board::getSpot(uint8_t x, uint8_t y)
 
 Spot* Board::getSpot(glm::vec2 pos)
 {
+	std::cout << "float x,y: " << pos.x << "," << pos.y << "\n";
+	std::cout << "casted x,y: " << (int)pos.x << "," << (int)pos.y << "\n";
 	return &this->boxes[(int)pos.y][(int)pos.x];
 }

@@ -62,7 +62,11 @@ bool Game::playerMove(Player* player, uint8_t startX, uint8_t startY, uint8_t en
 	Spot* endBox = board->getSpot(endX, endY);
 	Move* move = new Move(player, startBox, endBox);
 
-	return this->makeMove(move, player);
+	bool result = this->makeMove(move, player);
+	if (!result)
+		delete move;
+
+	return result;
 }
 
 void Game::setupRenderer()
@@ -99,6 +103,7 @@ void Game::sendPlayerInput(glm::vec2 activeCase)
 
 	// If clicking again on same spot, cancel selection
 #ifdef DEBUG_MODE
+	std::cout << "Target spot: " << spot->x << "," << spot->y << "\n";
 	std::cout << "Last spot: " << lastSelectedSpot << " | Equals nullptr?: " << (lastSelectedSpot == nullptr) << "\n";
 #endif
 	if (lastSelectedSpot != nullptr && lastSelectedSpot->x == spot->x && lastSelectedSpot->y == spot->y)
@@ -158,7 +163,6 @@ bool Game::makeMove(Move* move, Player* player)
 #ifdef DEBUG_MODE
 		std::cout << "No piece at source\n";
 #endif
-		delete move;
 		return false;
 	}
 
@@ -168,7 +172,6 @@ bool Game::makeMove(Move* move, Player* player)
 #ifdef DEBUG_MODE
 		std::cout << "Wrong player attempting to play\n";
 #endif
-		delete move;
 		return false;
 	}
 	std::cout << "Piece color: " << sourcePiece->isWhite() << "\n";
@@ -179,14 +182,12 @@ bool Game::makeMove(Move* move, Player* player)
 #ifdef DEBUG_MODE
 		std::cout << "Attempted to move wrong colored piece\n";
 #endif
-		delete move;
 		return false;
 	}
 	
 	// Make sure the attempted move is valid
 	if (!sourcePiece->canMove(board, start, end))
 	{
-		delete move;
 		return false;
 	}
 
