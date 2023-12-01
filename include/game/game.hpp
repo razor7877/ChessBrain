@@ -25,7 +25,7 @@ public:
 	/// </summary>
 	/// <param name="p1">The first player</param>
 	/// <param name="p2">The second player</param>
-	Game(Player p1, Player p2);
+	Game(Player* p1, Player* p2);
 	/// <summary>
 	/// Reinitialize the game's state
 	/// </summary>
@@ -45,23 +45,22 @@ public:
 	/// <param name="endX">The X position of the target spot</param>
 	/// <param name="endY">The Y position of the target spot</param>
 	/// <returns></returns>
-	bool playerMove(Player player, uint8_t startX, uint8_t startY, uint8_t endX, uint8_t endY);
+	bool playerMove(Player* player, uint8_t startX, uint8_t startY, uint8_t endX, uint8_t endY);
 	/// <summary>
 	/// Iterates over the different pieces in the board, and sends all relevant information for the renderer to draw them to screen
 	/// </summary>
-	/// <param name="renderer">The renderer that should be used to draw the game board</param>
-	void setupRenderer(Renderer* renderer);
+	void setupRenderer();
+	void drawFrame();
 	void sendPlayerInput(glm::vec2 activeCase);
 
 private:
 	Renderer* renderer;
-	Player players[2]{};
-	Board board{};
-	Player currentTurn{};
+	Player* players[2]{};
+	Board* board{};
+	Player* currentTurn{};
 	GameStatus status{};
-	std::vector<Move> movesPlayed{};
-
+	std::vector<Move*> movesPlayed{};
 	Spot* lastSelectedSpot;
 
-	bool makeMove(Move move, Player player);
+	bool makeMove(Move* move, Player* player);
 };

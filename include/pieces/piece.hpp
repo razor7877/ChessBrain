@@ -31,7 +31,7 @@ public:
 	void setWhite(bool white);
 	bool isKilled();
 	void setKilled(bool killed);
-	virtual bool canMove(Board board, Spot start, Spot end) = 0;
+	virtual bool canMove(Board* board, Spot* start, Spot* end) = 0;
 	virtual PieceType getType() = 0;
 
 private:

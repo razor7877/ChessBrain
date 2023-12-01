@@ -4,7 +4,7 @@
 
 Knight::Knight(bool white) : Piece::Piece(white){}
 
-bool Knight::canMove(Board board, Spot start, Spot end)
+bool Knight::canMove(Board* board, Spot* start, Spot* end)
 {
 	return true;
 }

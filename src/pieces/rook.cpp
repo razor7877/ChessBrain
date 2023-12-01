@@ -4,7 +4,7 @@
 
 Rook::Rook(bool white) : Piece::Piece(white){}
 
-bool Rook::canMove(Board board, Spot start, Spot end)
+bool Rook::canMove(Board* board, Spot* start, Spot* end)
 {
 	return true;
 }

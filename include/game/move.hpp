@@ -9,7 +9,8 @@ class Player;
 class Move
 {
 public:
-	Move(Player player, Spot* start, Spot* end);
+	Move(Player* player, Spot* start, Spot* end);
+	~Move();
 	bool isCastlingMove();
 	void setCastlingMove(bool castlingMove);
 	Spot* getStart();
@@ -17,7 +18,7 @@ public:
 	void setPieceKilled(Piece* piece);
 
 private:
-	Player player;
+	Player* player;
 	Spot* start;
 	Spot* end;
 	Piece* pieceMoved;

@@ -110,12 +110,9 @@ int main()
 		return -1;
 	}
 
-	HumanPlayer p1 = HumanPlayer(true);
-	HumanPlayer p2 = HumanPlayer(false);
-	Game game = Game(p1, p2);
-
-	Renderer* renderer = new Renderer();
-	game.setupRenderer(renderer);
+	HumanPlayer* p1 = new HumanPlayer(true);
+	HumanPlayer* p2 = new HumanPlayer(false);
+	Game* game = new Game(p1, p2);
 
 	// Render loop
 	while (!glfwWindowShouldClose(window))
@@ -127,15 +124,20 @@ int main()
 		if (caseUpdate)
 		{
 			caseUpdate = false;
-			game.sendPlayerInput(activeCase);
+			game->sendPlayerInput(activeCase);
 		}
 
-		renderer->drawFrame();
+		game->drawFrame();
 
 		// Swap new frame and poll GLFW for inputs
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
+
+	// Free up heap
+	delete p1;
+	delete p2;
+	delete game;
 
 	glfwTerminate();
     return 0;

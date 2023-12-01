@@ -4,7 +4,7 @@
 
 Queen::Queen(bool white) : Piece::Piece(white){}
 
-bool Queen::canMove(Board board, Spot start, Spot end)
+bool Queen::canMove(Board* board, Spot* start, Spot* end)
 {
 	return true;
 }

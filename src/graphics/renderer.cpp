@@ -85,6 +85,8 @@ Sprite* Renderer::addPiece(Piece* piece, uint8_t x, uint8_t y)
 	return pawnSprite;
 }
 
+void Renderer::clearSprites() { this->sprites.clear(); }
+
 void Renderer::drawFrame()
 {
 	// Draw the board

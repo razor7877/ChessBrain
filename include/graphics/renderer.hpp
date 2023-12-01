@@ -17,6 +17,7 @@ public:
 	Renderer();
 	~Renderer();
 	Sprite* addPiece(Piece* piece, uint8_t x, uint8_t y);
+	void clearSprites();
 	void drawFrame();
 
 	Shader* boardShader;
