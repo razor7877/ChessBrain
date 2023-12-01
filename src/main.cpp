@@ -12,6 +12,7 @@
 #include "game/game.hpp"
 #include "game/humanPlayer.hpp"
 #include "game/player.hpp"
+#include <pieces/pawn.hpp>
 
 // Startup resolution
 const int WINDOW_WIDTH = 600;
@@ -113,8 +114,8 @@ int main()
 	HumanPlayer p2 = HumanPlayer(false);
 	Game game = Game(p1, p2);
 
-	Renderer renderer = Renderer();
-	//game.setupRenderer(renderer);
+	Renderer* renderer = new Renderer();
+	game.setupRenderer(renderer);
 
 	// Render loop
 	while (!glfwWindowShouldClose(window))
@@ -126,7 +127,7 @@ int main()
 		glBindVertexArray(VAO);
 		glDrawArrays(GL_TRIANGLES, 0, 6);
 		
-		renderer.drawFrame();
+		renderer->drawFrame(); 
 
 		// Swap new frame and poll GLFW for inputs
 		glfwSwapBuffers(window);

@@ -16,5 +16,4 @@ struct Sprite
 	Texture* texture;
 	glm::mat4 modelMatrix;
 	Sprite(Texture* texture);
-	~Sprite();
 };

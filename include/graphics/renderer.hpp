@@ -20,7 +20,8 @@ public:
 
 private:
 	std::vector<Sprite*> sprites;
-	std::map<PieceType, Texture*> pieceTextures;
+	std::map<PieceType, Texture*> whitePieceTextures;
+	std::map<PieceType, Texture*> blackPieceTextures;
 
 	Shader* pieceShader;
 };

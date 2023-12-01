@@ -54,8 +54,3 @@ Sprite::Sprite(Texture* texture)
 	this->modelMatrix = glm::scale(this->modelMatrix, glm::vec3(1.0f / 8.0f));
 	this->texture = texture;
 }
-
-Sprite::~Sprite()
-{
-	delete this->texture;
-}

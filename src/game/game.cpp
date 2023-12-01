@@ -39,17 +39,17 @@ bool Game::playerMove(Player player, uint8_t startX, uint8_t startY, uint8_t end
 	return this->makeMove(move, player);
 }
 
-void Game::setupRenderer(Renderer renderer)
+void Game::setupRenderer(Renderer* renderer)
 {
-	this->board.showBoardToConsole();
-	for (int x = 0; x < 1; x++)
+	for (int x = 0; x < 8; x++)
 	{
-		for (int y = 0; y < 1; y++)
+		for (int y = 0; y < 8; y++)
 		{
 			Spot spot = this->board.getSpot(x, y);
 			if (spot.piece != nullptr)
 			{
-				renderer.addPiece(spot.piece, x, y);
+				std::cout << "Piece at " << x << " " << y << "\n";
+				renderer->addPiece(spot.piece, x, y);
 			}
 				
 		}

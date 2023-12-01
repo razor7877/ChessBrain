@@ -45,7 +45,7 @@ public:
 	/// <param name="endY">The Y position of the target spot</param>
 	/// <returns></returns>
 	bool playerMove(Player player, uint8_t startX, uint8_t startY, uint8_t endX, uint8_t endY);
-	void setupRenderer(Renderer renderer);
+	void setupRenderer(Renderer* renderer);
 
 private:
 	Player players[2]{};
