@@ -3,6 +3,7 @@
 
 #include <glad/glad.h>
 #include <glm/glm.hpp>
+#include <string>
 
 // A class used to easily compile shaders from a given source and setup their data to be used by OpenGL
 // Also contains helper methods to easily modify the shader's uniforms

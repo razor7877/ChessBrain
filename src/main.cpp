@@ -6,6 +6,7 @@
 #include <GLFW/glfw3.h>
 #include <graphics/stb_image.h>
 
+#include "graphics/renderer.hpp"
 #include "graphics/texture.hpp"
 #include "graphics/shader.hpp"
 #include "game/game.hpp"
@@ -100,7 +101,7 @@ int main()
 		"C:/Users/kylia/Desktop/GitHub/ChessBrain/src/shaders/piece.vert",
 		"C:/Users/kylia/Desktop/GitHub/ChessBrain/src/shaders/piece.frag"
 	);
-
+	
 	// Board
 	unsigned int VAO, VBO;
 	glGenVertexArrays(1, &VAO);
@@ -112,7 +113,7 @@ int main()
 
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
-
+	/*
 	// One pawn
 	// Image from https://opengameart.org/content/chess-pieces-and-board-squares
 	Texture pawn = Texture("C:/Users/kylia/Desktop/GitHub/ChessBrain/images/b_bishop_png_1024px.png");
@@ -160,14 +161,22 @@ int main()
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(1);
 
-	float x = -7;
-	float y = -5;
+	float realX = 0;
+	float realY = 0;
+	// Chess piece coords are x,y between 0-7
+	// After scaling, when translating the piece, bottom left corner becomes -7,-7 (x,y)
+	// and top right corner becomes 7,7 (x,y), thus, we need a way to get the correct translation
+	float x = realX > 3 ? (7 - 2 * realX) : (-7 + 2 * realX);
+	float y = realY > 3 ? (7 - 2 * realY) : (-7 + 2 * realY);
 	glm::mat4 pawnModelMatrix = glm::mat4(1.0f);
 	pawnModelMatrix = glm::scale(pawnModelMatrix, glm::vec3(1.0f / 8.0f));
+	// Translation is relative to previous scaling
 	pawnModelMatrix = glm::translate(pawnModelMatrix, glm::vec3(x, y, 0.0f));
 
 	pieceShader.use();
-	pieceShader.setMat4("model", pawnModelMatrix);
+	pieceShader.setMat4("model", pawnModelMatrix);*/
+
+	Renderer renderer = Renderer();
 
 	HumanPlayer p1 = HumanPlayer(true);
 	HumanPlayer p2 = HumanPlayer(false);
@@ -178,15 +187,12 @@ int main()
 	{
 		glClearColor(1.0f, 0.5f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		
+		//boardShader.use();
+		//glBindVertexArray(VAO);
+		//glDrawArrays(GL_TRIANGLES, 0, 6);
 
-		boardShader.use();
-		glBindVertexArray(VAO);
-		glDrawArrays(GL_TRIANGLES, 0, 6);
-
-		pieceShader.use();
-		glBindVertexArray(pawnVAO);
-		glBindTexture(GL_TEXTURE_2D, pawn.texID);
-		glDrawArrays(GL_TRIANGLES, 0, 6);
+		renderer.drawFrame();
 
 		// Swap new frame and poll GLFW for inputs
 		glfwSwapBuffers(window);
