@@ -109,11 +109,12 @@ int main()
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
 
-	Renderer renderer = Renderer();
-
 	HumanPlayer p1 = HumanPlayer(true);
 	HumanPlayer p2 = HumanPlayer(false);
 	Game game = Game(p1, p2);
+
+	Renderer renderer = Renderer();
+	//game.setupRenderer(renderer);
 
 	// Render loop
 	while (!glfwWindowShouldClose(window))

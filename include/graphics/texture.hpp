@@ -8,7 +8,6 @@ class Texture
 {
 public:
 	unsigned int texID;
-	std::string path;
 
 	Texture();
 

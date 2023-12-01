@@ -1,5 +1,6 @@
 #include "game/game.hpp"
 #include "pieces/king.hpp"
+#include <iostream>
 
 Game::Game()
 {
@@ -36,6 +37,23 @@ bool Game::playerMove(Player player, uint8_t startX, uint8_t startY, uint8_t end
 	Move move = Move(player, startBox, endBox);
 
 	return this->makeMove(move, player);
+}
+
+void Game::setupRenderer(Renderer renderer)
+{
+	this->board.showBoardToConsole();
+	for (int x = 0; x < 1; x++)
+	{
+		for (int y = 0; y < 1; y++)
+		{
+			Spot spot = this->board.getSpot(x, y);
+			if (spot.piece != nullptr)
+			{
+				renderer.addPiece(spot.piece, x, y);
+			}
+				
+		}
+	}
 }
 
 bool Game::isEnd() { return this->status != GameStatus::ACTIVE; }

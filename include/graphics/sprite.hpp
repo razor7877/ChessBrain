@@ -13,8 +13,8 @@ struct Sprite
 	unsigned int VAO;
 	unsigned int VBO;
 	unsigned int texCoordsBO;
-	Texture* tex;
+	Texture* texture;
 	glm::mat4 modelMatrix;
-	Sprite();
+	Sprite(Texture* texture);
 	~Sprite();
 };

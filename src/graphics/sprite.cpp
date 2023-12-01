@@ -1,5 +1,7 @@
 #include "glad/glad.h"
 
+#include <glm/ext/matrix_transform.hpp>
+
 #include "graphics/sprite.hpp"
 
 const float Sprite::quadVerts[] = {
@@ -22,7 +24,7 @@ const float Sprite::quadTexCoords[] = {
 	0.0f, 0.0f, // Bottom left
 };
 
-Sprite::Sprite()
+Sprite::Sprite(Texture* texture)
 {
 	// Generate VAO and VBO and bind them
 	glGenVertexArrays(1, &this->VAO);
@@ -47,9 +49,13 @@ Sprite::Sprite()
 	// Enable layout 1 input in shader
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(1);
+
+	this->modelMatrix = glm::mat4(1.0f);
+	this->modelMatrix = glm::scale(this->modelMatrix, glm::vec3(1.0f / 8.0f));
+	this->texture = texture;
 }
 
 Sprite::~Sprite()
 {
-	delete this->tex;
+	delete this->texture;
 }
