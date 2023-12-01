@@ -156,6 +156,10 @@ void Game::sendPlayerInput(glm::vec2 activeCase)
 
 bool Game::makeMove(Move* move, Player* player)
 {
+	// Don't make any moves if the game is finished
+	if (this->isEnd())
+		return false;
+
 #ifdef DEBUG_MODE
 	std::cout << "Attempting move\n";
 #endif
@@ -224,6 +228,9 @@ bool Game::makeMove(Move* move, Player* player)
 	// Check if king was killed and change game state if so
 	if (destPiece != nullptr && destPiece->getType() == PieceType::KING)
 	{
+#ifdef DEBUG_MODE
+		std::cout << "King killed, game finished\n";
+#endif
 		if (player->isWhiteSide())
 			this->status = GameStatus::WHITE_WIN;
 		else

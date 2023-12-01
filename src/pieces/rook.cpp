@@ -10,6 +10,7 @@ bool Rook::canMove(Board* board, Spot* start, Spot* end)
 	if (end->piece != nullptr && end->piece->isWhite() == this->isWhite())
 		return false;
 
+	// Rook can only move on one axis at a time, so one of the coordinates must remain the same for move to be valid
 	if (start->x != end->x && start->y != end->y)
 		return false;
 
