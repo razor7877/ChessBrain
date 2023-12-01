@@ -122,6 +122,7 @@ void Game::sendPlayerInput(glm::vec2 activeCase)
 	// If a piece was selected, then this is an attempt to make a move
 	if (lastSelectedSpot != nullptr)
 	{
+		// TODO : Ensure no memory leak with this Move ptr
 		Move* m = new Move(this->currentTurn, lastSelectedSpot, spot);
 		// Attempt a move
 		if (makeMove(m, this->currentTurn))
