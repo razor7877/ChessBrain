@@ -1,6 +1,9 @@
+#ifdef DEBUG_MODE
+#include <iostream>
+#endif
+
 #include "game/game.hpp"
 #include "pieces/king.hpp"
-#include <iostream>
 
 Game::Game()
 {
@@ -48,7 +51,9 @@ void Game::setupRenderer(Renderer* renderer)
 			Spot spot = this->board.getSpot(x, y);
 			if (spot.piece != nullptr)
 			{
+#ifdef DEBUG_MODE
 				std::cout << "Piece at " << x << " " << y << "\n";
+#endif
 				renderer->addPiece(spot.piece, x, y);
 			}
 				

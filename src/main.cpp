@@ -11,8 +11,9 @@
 #include "graphics/shader.hpp"
 #include "game/game.hpp"
 #include "game/humanPlayer.hpp"
-#include "game/player.hpp"
-#include <pieces/pawn.hpp>
+
+// Enable this for more verbose information on what is happening
+#define DEBUG_MODE
 
 constexpr float caseSize = 1.0f / 8.0f;
 
@@ -26,6 +27,9 @@ int windowHeight = WINDOW_HEIGHT;
 
 GLFWwindow* window;
 
+glm::vec2 activeCase = glm::vec2(0.0f);
+bool caseUpdate = false;
+
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
 	// Quit program when pressinc ESC
@@ -37,18 +41,27 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 {
+	// If the user left clicked somewhere in the window
 	if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS)
 	{
 		double xpos, ypos;
+		// Get the position of the click
 		glfwGetCursorPos(window, &xpos, &ypos);
+
 		// Get x,y position as a 0 to 1 ratio relative to screen size
 		xpos /= windowWidth;
 		// GLFW coordinates starts from the top left corner but we want to start from the bottom left
 		// so we calculate 1 minus the ratio
 		ypos = 1 - (ypos / windowHeight);
-		int xcase = xpos / caseSize;
-		int ycase = ypos / caseSize;
-		std::cout << "Click at x,y: " << xcase << "," << ycase << "\n";
+		int xCase = xpos / caseSize;
+		int yCase = ypos / caseSize;
+
+#ifdef DEBUG_MODE
+		std::cout << "Click at x,y: " << xCase << "," << yCase << "\n";
+#endif
+
+		activeCase = glm::vec2(xCase, yCase);
+		caseUpdate = true;
 	}
 }
 
@@ -103,6 +116,12 @@ int main()
 
 	glEnable(GL_BLEND);
 
+	// Create the shader for the board
+	Shader boardShader = Shader(
+		"C:/Users/kylia/Desktop/GitHub/ChessBrain/src/shaders/board.vert",
+		"C:/Users/kylia/Desktop/GitHub/ChessBrain/src/shaders/board.frag"
+	);
+
 	// Creates a quad that is used to draw the board
 	float vertices[] = {
 		-1.0f, 1.0f, 0.0f,
@@ -113,12 +132,6 @@ int main()
 		1.0f, -1.0f, 0.0f,
 		-1.0f, -1.0f, 0.0f,
 	};
-
-	// Create the shader for the board
-	Shader boardShader = Shader(
-		"C:/Users/kylia/Desktop/GitHub/ChessBrain/src/shaders/board.vert",
-		"C:/Users/kylia/Desktop/GitHub/ChessBrain/src/shaders/board.frag"
-	);
 	
 	// Board
 	unsigned int VAO, VBO;
@@ -148,8 +161,14 @@ int main()
 		boardShader.use();
 		glBindVertexArray(VAO);
 		glDrawArrays(GL_TRIANGLES, 0, 6);
+
+		if (caseUpdate)
+		{
+			caseUpdate = false;
+			boardShader.setVec2("activeCase", activeCase);
+		}
 		
-		renderer->drawFrame(); 
+		renderer->drawFrame();
 
 		// Swap new frame and poll GLFW for inputs
 		glfwSwapBuffers(window);

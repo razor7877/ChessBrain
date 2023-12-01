@@ -7,6 +7,5 @@
 class HumanPlayer : public virtual Player
 {
 public:
-	glm::vec2 currentCase;
 	HumanPlayer(bool whiteSide);
 };

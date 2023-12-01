@@ -1,4 +1,6 @@
+#ifdef DEBUG_MODE
 #include <iostream>
+#endif
 
 #include "graphics/renderer.hpp"
 
@@ -61,15 +63,15 @@ Sprite* Renderer::addPiece(Piece* piece, uint8_t x, uint8_t y)
 	// Chess piece coords are x,y between 0-7
 	// After scaling, when translating the piece, bottom left corner becomes -7,-7 (x,y)
 	// and top right corner becomes 7,7 (x,y), thus, we need a way to get the correct translation
-	//float mappedX = x > 3 ? (-7 + 2 * x) : (7 - 2 * x);
-	//float mappedY = y > 3 ? (-7 + 2 * y) : (7 - 2 * y);
 	float mappedX = -7 + 2 * x;
 	float mappedY = -7 + 2 * y;
 
 	// Translation is relative to previous scaling
 	pawnSprite->modelMatrix = glm::translate(pawnSprite->modelMatrix, glm::vec3(mappedX, mappedY, 0.0f));
 
+#ifdef DEBUG_MODE
 	std::cout << "Sprite: " << pawnSprite << "mapped at: " << mappedX << "," << mappedY << "\n";
+#endif
 	this->sprites.push_back(pawnSprite);
 
 	return pawnSprite;
@@ -87,8 +89,10 @@ void Renderer::drawFrame()
 		glDrawArrays(GL_TRIANGLES, 0, 6);
 	}
 
+#ifdef DEBUG_MODE
 	// Check for any potential OpenGL errors and print them
 	unsigned int errorCode = glGetError();
 	if (errorCode != 0)
 		std::cout << "OpenGL error code: " << errorCode << "\n";
+#endif
 }
