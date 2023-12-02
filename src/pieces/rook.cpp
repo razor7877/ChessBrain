@@ -15,17 +15,38 @@ bool Rook::canMove(Board* board, Spot* start, Spot* end)
 	if (start->x != end->x && start->y != end->y)
 		return false;
 
+	// True if moving on the x axis, false if moving on the y axis
 	bool isXMove = start->x != end->x;
-	int distMoved = isXMove ? abs(start->x - end->x) : abs(start->y - end->y);
-	/*
+	// Gets the distance moved to know how many spots to check
+	int distMoved = isXMove ? end->x - start->x : end->y - start->y;
+	int dirMove = distMoved > 0 ? 1 : -1;
+	distMoved = abs(distMoved);
+	
 #ifdef DEBUG_MODE
 	std::cout << "Moving rook with dist: " << distMoved << "\n";
-	for (int i = 0; i < distMoved; i++)
+#endif
+	// Check all spots along the moved axis to check for spots with pieces blocking the move
+	for (int i = 1; i < distMoved; i++)
 	{
-		std::cout
+		Spot* nextSpot;
+
+		// Removing 1 from all coords to map from 1:8 to 0:7
+		if (isXMove)
+		{
+			int x = start->x - 1 + i * dirMove;
+			int y = start->y - 1;
+			nextSpot = board->getSpot(x, y);
+		}
+		else
+		{
+			int x = start->x - 1;
+			int y = start->y - 1 + i * dirMove;
+			nextSpot = board->getSpot(x, y);
+		}
+
+		if (nextSpot->piece != nullptr)
+			return false;
 	}
-	
-#endif*/
 
 	return true;
 }
