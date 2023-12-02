@@ -137,7 +137,7 @@ int main()
 	// Free up heap
 	delete p1;
 	delete p2;
-	delete game;
+	//delete game;
 
 	glfwTerminate();
     return 0;

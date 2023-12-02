@@ -11,11 +11,7 @@ Move::Move(Player* player, Spot* start, Spot* end)
 
 Move::~Move()
 {
-	delete player;
-	delete start;
-	delete end;
-	delete pieceMoved;
-	delete pieceKilled;
+
 }
 
 bool Move::isCastlingMove() { return this->castlingMove; }

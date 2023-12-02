@@ -175,6 +175,7 @@ bool Game::makeMove(Move* move, Player* player)
 #ifdef DEBUG_MODE
 		std::cout << "No piece at source\n";
 #endif
+		delete move;
 		return false;
 	}
 
@@ -184,6 +185,7 @@ bool Game::makeMove(Move* move, Player* player)
 #ifdef DEBUG_MODE
 		std::cout << "Wrong player attempting to play\n";
 #endif
+		delete move;
 		return false;
 	}
 	std::cout << "Piece color: " << sourcePiece->isWhite() << "\n";
@@ -194,12 +196,14 @@ bool Game::makeMove(Move* move, Player* player)
 #ifdef DEBUG_MODE
 		std::cout << "Attempted to move wrong colored piece\n";
 #endif
+		delete move;
 		return false;
 	}
 	
 	// Make sure the attempted move is valid
 	if (!sourcePiece->canMove(board, start, end))
 	{
+		delete move;
 		return false;
 	}
 

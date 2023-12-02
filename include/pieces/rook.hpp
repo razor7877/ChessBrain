@@ -1,4 +1,6 @@
 #pragma once
+
+#include "main.hpp"
 #include "piece.hpp"
 
 class Rook : public virtual Piece
