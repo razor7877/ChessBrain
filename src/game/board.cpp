@@ -73,8 +73,6 @@ void Board::resetBoard()
 			this->boxes[x][y] = Spot(nullptr, y + 1, x + 1);
 		}
 	}
-
-	this->showBoardToConsole();
 }
 
 void Board::dumpBoardToConsole()
@@ -120,36 +118,49 @@ void Board::dumpBoardToConsole()
 
 void Board::showBoardToConsole()
 {
-	for (int x = 0; x < 8; x++)
+	std::string board = "\n";
+	for (int x = 7; x >= 0 ; x--)
 	{
-		std::string row = "";
+		board += "| ";
 		for (int y = 0; y < 8; y++)
 		{
-			Spot spot = this->boxes[x][y];
-			if (spot.piece == nullptr)
+			Spot* spot = this->getSpot(y, x);
+			if (spot->piece == nullptr)
 			{
-				row += "- ";
+				board += " - ";
 			}
 			else
 			{
-				PieceType type = spot.piece->getType();
-				row += Piece::enumToString.at(type) + " ";
-				row += spot.piece->isWhite() ? "wh" : "bl";
-				row += " ";
+				PieceType type = spot->piece->getType();
+				board += Piece::enumToString.at(type) + " ";
+				board += spot->piece->isWhite() ? "0" : "1";
 			}
+			board += " | ";
 		}
-		std::cout << row << "\n";
+		board += "\n";
 	}
+	std::cout << board << "\n";
 }
 
 Spot* Board::getSpot(uint8_t x, uint8_t y)
 {
+	if (x < 0 || x > 7 || y < 0 || y > 7)
+	{
+#ifdef DEBUG_MODE
+		std::cout << "Attempted out of bounds getSpot() call with pos: " << x << "," << y << "\n";
+		return nullptr;
+#endif
+	}
+
 	return &this->boxes[y][x];
 }
 
 Spot* Board::getSpot(glm::vec2 pos)
 {
-	if (pos.x < 0 || pos.x > 7 || pos.y < 0 || pos.y > 7)
+	int x = (int)pos.x;
+	int y = (int)pos.y;
+
+	if (x < 0 || x > 7 || y < 0 || y > 7)
 	{
 #ifdef DEBUG_MODE
 		std::cout << "Attempted out of bounds getSpot() call with pos: " << pos.x << "," << pos.y << "\n";
@@ -157,10 +168,10 @@ Spot* Board::getSpot(glm::vec2 pos)
 #endif
 	}
 
-	Spot s = this->boxes[(int)pos.y][(int)pos.x];
+	Spot s = this->boxes[y][x];
 #ifdef DEBUG_MODE
-	std::cout << "getSpot() call with pos: " << pos.x << "," << pos.y << "\n";
-	std::cout << "Returns spot with pos: " << s.x << "," << s.y << "\n";
+	std::cout << "getSpot() call with pos: " << x << "," << pos.y << "\n";
+	std::cout << "Returns spot with pos: " << s. x << "," << s.y << "\n";
 #endif
-	return &this->boxes[(int)pos.y][(int)pos.x];
+	return &this->boxes[y][x];
 }

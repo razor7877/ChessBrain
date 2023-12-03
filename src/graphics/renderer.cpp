@@ -81,13 +81,15 @@ void Renderer::setupRenderer(Board* board)
 			if (spot->piece != nullptr)
 			{
 #ifdef DEBUG_MODE
-				std::cout << "Piece at " << x << " " << y << "\n";
+				//std::cout << "Piece at " << x << " " << y << "\n";
 #endif
 				this->addPiece(spot->piece, x, y);
 			}
 
 		}
 	}
+
+	board->showBoardToConsole();
 }
 
 Sprite* Renderer::addPiece(Piece* piece, uint8_t x, uint8_t y)
