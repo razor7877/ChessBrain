@@ -116,6 +116,8 @@ int main()
 	p2 = new HumanPlayer(false, renderer);
 	game = new Game(renderer, p1, p2);
 
+	tensorflow::SavedModelBundle
+
 	// Render loop
 	while (!glfwWindowShouldClose(window))
 	{

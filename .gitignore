@@ -399,3 +399,5 @@ FodyWeavers.xsd
 
 build/
 glfw-3.3.8
+libs/tensorflow.dll
+libs/tensorflow.lib
