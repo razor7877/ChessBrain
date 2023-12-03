@@ -6,10 +6,7 @@ class Player
 {
 public:
 	bool whiteSide;
-	bool humanPlayer;
 
+	Player(bool isWhite);
 	bool isWhiteSide();
-	bool isHumanPlayer();
-	virtual bool getIsNextMoveReady() = 0;
-	virtual glm::vec4 getNextInputs() = 0;
 };

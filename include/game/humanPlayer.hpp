@@ -2,13 +2,18 @@
 #include <glm/glm.hpp>
 
 #include "game/player.hpp"
+#include "game/game.hpp"
+#include "graphics/renderer.hpp"
 
 class HumanPlayer : public virtual Player
 {
 public:
-	bool isNextMoveReady;
+	// Keep a reference to the renderer so that the player can update currently selected case
+	Renderer* currentRenderer;
 
-	HumanPlayer(bool whiteSide);
-	virtual bool getIsNextMoveReady();
-	virtual glm::vec4 getNextInputs();
+	HumanPlayer(bool whiteSide, Renderer* currentRenderer);
+	void updateInput(Game* currentGame, glm::vec2 clickedCase);
+
+private:
+	glm::vec2 activeCase = glm::vec2(-1.0f);
 };

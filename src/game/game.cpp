@@ -19,6 +19,9 @@ Game::Game(Renderer* renderer, Player* p1, Player* p2)
 	this->renderer = renderer;
 	renderer->setupRenderer(board);
 
+	//p1->currentGame = this;
+	//p2->currentGame = this;
+
 	this->players[0] = p1;
 	this->players[1] = p2;
 

@@ -55,7 +55,10 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 #endif
 
 		glm::vec2 clickedCase = glm::vec2(xCase, yCase);
-		updatePlayerInput(clickedCase);
+		if (game->getCurrentPlayer() == p1)
+			p1->updateInput(game, clickedCase);
+		else
+			p2->updateInput(game, clickedCase);
 	}
 }
 
@@ -101,39 +104,6 @@ int setupGlfwContext()
 	return 0;
 }
 
-void updatePlayerInput(glm::vec2 clickedCase)
-{
-#ifdef DEBUG_MODE
-	std::cout << "Active case: " << activeCase.x << "," << activeCase.y << "\n";
-#endif
-	
-	if (activeCase != glm::vec2(-1.0f))
-	{
-		// Clicking on same case, cancel selection
-		if (clickedCase == activeCase)
-		{
-			renderer->setActiveCase(glm::vec2(-1.0f));
-			activeCase = glm::vec2(-1.0f);
-		}
-		// If a case was clicked which isn't the same as the selected one, attempt move
-		else if (game->playerMove(game->getCurrentPlayer(), activeCase.x, activeCase.y, clickedCase.x, clickedCase.y))
-		{
-			renderer->setActiveCase(glm::vec2(-1.0f));
-			activeCase = glm::vec2(-1.0f);
-		}
-			
-	}
-	// Click on valid case, select it
-	else if (game->isValidCaseClick(clickedCase))
-	{
-#ifdef DEBUG_MODE
-		std::cout << "Selected case: " << clickedCase.x << "," << clickedCase.y << "\n";
-#endif
-		renderer->setActiveCase(clickedCase);
-		activeCase = clickedCase;
-	}
-}
-
 int main()
 {
 	if (setupGlfwContext() != 0)
@@ -142,8 +112,8 @@ int main()
 	}
 
 	renderer = new Renderer();
-	p1 = new HumanPlayer(true);
-	p2 = new HumanPlayer(false);
+	p1 = new HumanPlayer(true, renderer);
+	p2 = new HumanPlayer(false, renderer);
 	game = new Game(renderer, p1, p2);
 
 	// Render loop
