@@ -7,6 +7,10 @@
 #include "game/game.hpp"
 #include "game/humanPlayer.hpp"
 
+#include "tensorflow/core/public/session.h"
+#include "tensorflow/core/public/session_options.h"
+#include "tensorflow/core/platform/env.h"
+
 // Startup resolution
 const int WINDOW_WIDTH = 600;
 const int WINDOW_HEIGHT = 600;
@@ -16,8 +20,6 @@ int windowWidth = WINDOW_WIDTH;
 int windowHeight = WINDOW_HEIGHT;
 
 GLFWwindow* window;
-
-glm::vec2 activeCase = glm::vec2(-1.0f);
 
 Renderer* renderer;
 HumanPlayer* p1;
@@ -115,8 +117,6 @@ int main()
 	p1 = new HumanPlayer(true, renderer);
 	p2 = new HumanPlayer(false, renderer);
 	game = new Game(renderer, p1, p2);
-
-	tensorflow::SavedModelBundle
 
 	// Render loop
 	while (!glfwWindowShouldClose(window))
