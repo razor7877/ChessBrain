@@ -47,6 +47,10 @@ public:
 	/// <returns></returns>
 	bool playerMove(Player* player, uint8_t startX, uint8_t startY, uint8_t endX, uint8_t endY);
 	/// <summary>
+	/// Ticks forward the game logic and draws the next frame
+	/// </summary>
+	void playGame();
+	/// <summary>
 	/// Iterates over the different pieces in the board, and sends all relevant information for the renderer to draw them to screen
 	/// </summary>
 	void setupRenderer();

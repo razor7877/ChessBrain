@@ -34,6 +34,9 @@ Renderer::Renderer()
 		"C:/Users/kylia/Desktop/GitHub/ChessBrain/src/shaders/board.frag"
 	);
 
+	// Show no active case on the board at first
+	this->boardShader->use().setVec2("activeCase", glm::vec2(-1.0f));
+
 	// Creates the board
 	glGenVertexArrays(1, &boardVAO);
 	glGenBuffers(1, &boardVBO);
@@ -86,6 +89,10 @@ void Renderer::clearSprites() { this->sprites.clear(); }
 
 void Renderer::drawFrame()
 {
+	// Clear buffers before drawing next frame
+	glClearColor(1.0f, 0.5f, 0.0f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
 	// Draw the board
 	this->boardShader->use();
 	glBindVertexArray(this->boardVAO);

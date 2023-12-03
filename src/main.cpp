@@ -1,15 +1,9 @@
 #include <iostream>
 
-#include <glm/glm.hpp>
-#include <glm/ext/matrix_transform.hpp>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-#include <graphics/stb_image.h>
 
 #include "main.hpp"
-#include "graphics/renderer.hpp"
-#include "graphics/texture.hpp"
-#include "graphics/shader.hpp"
 #include "game/game.hpp"
 #include "game/humanPlayer.hpp"
 
@@ -117,10 +111,6 @@ int main()
 	// Render loop
 	while (!glfwWindowShouldClose(window))
 	{
-		// Clear buffers before drawing next frame
-		glClearColor(1.0f, 0.5f, 0.0f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
 		if (caseUpdate)
 		{
 			caseUpdate = false;
@@ -137,7 +127,7 @@ int main()
 	// Free up heap
 	delete p1;
 	delete p2;
-	//delete game;
+	delete game;
 
 	glfwTerminate();
     return 0;

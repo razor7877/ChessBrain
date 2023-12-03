@@ -19,8 +19,6 @@ Game::Game(Player* p1, Player* p2)
 	this->board = new Board();
 	this->renderer = new Renderer();
 	this->setupRenderer();
-	// Show no active case on the board at first
-	this->renderer->boardShader->use().setVec2("activeCase", glm::vec2(-1.0f));
 	this->lastSelectedSpot = nullptr;
 
 	this->players[0] = p1;
@@ -36,12 +34,8 @@ Game::~Game()
 {
 	delete renderer;
 	delete board;
-	delete currentTurn;
 	delete lastSelectedSpot;
-
-	for (Player* player : this->players)
-		delete player;
-
+	
 	for (Move* move : this->movesPlayed)
 		delete move;
 }
@@ -71,6 +65,11 @@ bool Game::playerMove(Player* player, uint8_t startX, uint8_t startY, uint8_t en
 		delete move;
 
 	return result;
+}
+
+void Game::playGame()
+{
+	this->renderer->drawFrame();
 }
 
 void Game::setupRenderer()
