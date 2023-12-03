@@ -69,6 +69,27 @@ Renderer::~Renderer()
 		delete pair.second;
 }
 
+void Renderer::setupRenderer(Board* board)
+{
+	this->clearSprites();
+
+	for (int x = 0; x < 8; x++)
+	{
+		for (int y = 0; y < 8; y++)
+		{
+			Spot* spot = board->getSpot(x, y);
+			if (spot->piece != nullptr)
+			{
+#ifdef DEBUG_MODE
+				std::cout << "Piece at " << x << " " << y << "\n";
+#endif
+				this->addPiece(spot->piece, x, y);
+			}
+
+		}
+	}
+}
+
 Sprite* Renderer::addPiece(Piece* piece, uint8_t x, uint8_t y)
 {
 	Texture* pieceTexture;
@@ -115,3 +136,5 @@ void Renderer::drawFrame()
 		std::cout << "OpenGL error code: " << errorCode << "\n";
 #endif
 }
+
+void Renderer::setActiveCase(glm::vec2 activeCase) { this->boardShader->use().setVec2("activeCase", activeCase); }

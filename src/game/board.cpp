@@ -149,6 +149,14 @@ Spot* Board::getSpot(uint8_t x, uint8_t y)
 
 Spot* Board::getSpot(glm::vec2 pos)
 {
+	if (pos.x < 0 || pos.x > 7 || pos.y < 0 || pos.y > 7)
+	{
+#ifdef DEBUG_MODE
+		std::cout << "Attempted out of bounds getSpot() call with pos: " << pos.x << "," << pos.y << "\n";
+		return nullptr;
+#endif
+	}
+
 	Spot s = this->boxes[(int)pos.y][(int)pos.x];
 #ifdef DEBUG_MODE
 	std::cout << "getSpot() call with pos: " << pos.x << "," << pos.y << "\n";

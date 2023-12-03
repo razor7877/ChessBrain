@@ -11,15 +11,13 @@ Game::Game()
 {
 	this->board = nullptr;
 	this->renderer = nullptr;
-	this->lastSelectedSpot = nullptr;
 }
 
-Game::Game(Player* p1, Player* p2)
+Game::Game(Renderer* renderer, Player* p1, Player* p2)
 {
 	this->board = new Board();
-	this->renderer = new Renderer();
-	this->setupRenderer();
-	this->lastSelectedSpot = nullptr;
+	this->renderer = renderer;
+	renderer->setupRenderer(board);
 
 	this->players[0] = p1;
 	this->players[1] = p2;
@@ -32,10 +30,8 @@ Game::Game(Player* p1, Player* p2)
 
 Game::~Game()
 {
-	delete renderer;
 	delete board;
-	delete lastSelectedSpot;
-	
+
 	for (Move* move : this->movesPlayed)
 		delete move;
 }
@@ -49,10 +45,14 @@ void Game::initialize()
 	else
 		this->currentTurn = players[1];
 
+	for (Move* move : this->movesPlayed)
+		delete move;
 	movesPlayed.clear();
 }
 
 bool Game::isEnd() { return this->status != GameStatus::ACTIVE; }
+
+Player* Game::getCurrentPlayer() { return this->currentTurn; }
 
 bool Game::playerMove(Player* player, uint8_t startX, uint8_t startY, uint8_t endX, uint8_t endY)
 {
@@ -67,92 +67,27 @@ bool Game::playerMove(Player* player, uint8_t startX, uint8_t startY, uint8_t en
 	return result;
 }
 
-void Game::playGame()
+bool Game::isValidCaseClick(glm::vec2 selectedCase)
 {
-	this->renderer->drawFrame();
-}
+	if (this->isEnd())
+		return false;
 
-void Game::setupRenderer()
-{
-	this->renderer->clearSprites();
-
-	for (int x = 0; x < 8; x++)
-	{
-		for (int y = 0; y < 8; y++)
-		{
-			Spot* spot = this->board->getSpot(x, y);
-			if (spot->piece != nullptr)
-			{
-#ifdef DEBUG_MODE
-				std::cout << "Piece at " << x << " " << y << "\n";
-#endif
-				this->renderer->addPiece(spot->piece, x, y);
-			}
-				
-		}
-	}
-	board->showBoardToConsole();
-}
-
-void Game::drawFrame()
-{
-	this->renderer->drawFrame();
-}
-
-void Game::sendPlayerInput(glm::vec2 activeCase)
-{
-#ifdef DEBUG_MODE
-	std::cout << "Active case: " << activeCase.x << "," << activeCase.y << "\n";
-#endif
 	// Get the spot that was selected
-	Spot* spot = board->getSpot(activeCase);
+	Spot* spot = board->getSpot(selectedCase);
 
-	// If clicking again on same spot, cancel selection
-#ifdef DEBUG_MODE
-	std::cout << "Target spot: " << spot->x << "," << spot->y << "\n";
-	std::cout << "Last spot: " << lastSelectedSpot << " | Equals nullptr?: " << (lastSelectedSpot == nullptr) << "\n";
-#endif
-	if (lastSelectedSpot != nullptr && lastSelectedSpot->x == spot->x && lastSelectedSpot->y == spot->y)
-	{
-		lastSelectedSpot = nullptr;
-		// Set selected case outside of board
-		this->renderer->boardShader->use().setVec2("activeCase", glm::vec2(-1.0f));
-		return;
-	}
-
-	// If a piece was selected, then this is an attempt to make a move
-	if (lastSelectedSpot != nullptr)
-	{
-		// TODO : Ensure no memory leak with this Move ptr
-		Move* m = new Move(this->currentTurn, lastSelectedSpot, spot);
-		// Attempt a move
-		if (makeMove(m, this->currentTurn))
-		{
-			// If successful, reset selection
-			lastSelectedSpot = nullptr;
-			this->renderer->boardShader->use().setVec2("activeCase", glm::vec2(-1.0f));
-		}
-		else
-		{
-#ifdef DEBUG_MODE
-			std::cout << "Failed move\n";
-#endif
-		}
-		
-		return;
-	}
+	// Spot will be a nullptr if an out of bounds vector was passed as parameter
+	if (spot == nullptr)
+		return false;
 
 	// If the spot doesn't contain a piece, ignore input
 	if (spot->piece == nullptr)
-		return;
+		return false;
 
 	// If the spot contains a piece corresponding to the other player's color, ignore input
 	if (spot->piece->isWhite() != currentTurn->isWhiteSide())
-		return;
+		return false;
 
-	lastSelectedSpot = spot;
-	// Show the selected spot on the board
-	this->renderer->boardShader->use().setVec2("activeCase", activeCase);
+	return true;
 }
 
 bool Game::makeMove(Move* move, Player* player)
@@ -174,7 +109,6 @@ bool Game::makeMove(Move* move, Player* player)
 #ifdef DEBUG_MODE
 		std::cout << "No piece at source\n";
 #endif
-		delete move;
 		return false;
 	}
 
@@ -184,7 +118,6 @@ bool Game::makeMove(Move* move, Player* player)
 #ifdef DEBUG_MODE
 		std::cout << "Wrong player attempting to play\n";
 #endif
-		delete move;
 		return false;
 	}
 	std::cout << "Piece color: " << sourcePiece->isWhite() << "\n";
@@ -195,14 +128,12 @@ bool Game::makeMove(Move* move, Player* player)
 #ifdef DEBUG_MODE
 		std::cout << "Attempted to move wrong colored piece\n";
 #endif
-		delete move;
 		return false;
 	}
 	
 	// Make sure the attempted move is valid
 	if (!sourcePiece->canMove(board, start, end))
 	{
-		delete move;
 		return false;
 	}
 
@@ -210,7 +141,6 @@ bool Game::makeMove(Move* move, Player* player)
 #ifdef DEBUG_MODE
 	std::cout << "Successful move\n";
 #endif
-	lastSelectedSpot = nullptr;
 
 	// Check if there was a kill
 	Piece* destPiece = end->piece;
@@ -251,7 +181,7 @@ bool Game::makeMove(Move* move, Player* player)
 	else
 		this->currentTurn = players[0];
 
-	this->setupRenderer();
+	renderer->setupRenderer(board);
 
 	return true;
 }

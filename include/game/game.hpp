@@ -25,17 +25,22 @@ public:
 	/// </summary>
 	/// <param name="p1">The first player</param>
 	/// <param name="p2">The second player</param>
-	Game(Player* p1, Player* p2);
+	Game(Renderer* renderer, Player* p1, Player* p2);
+	~Game();
 	/// <summary>
 	/// Reinitialize the game's state
 	/// </summary>
-	~Game();
 	void initialize();
 	/// <summary>
 	/// Returns whether the game is finished or not
 	/// </summary>
 	/// <returns>True if the game is finished, false otherwise</returns>
 	bool isEnd();
+	/// <summary>
+	/// Returns the player whose turn it is to play
+	/// </summary>
+	/// <returns>The player that is currently playing their turn</returns>
+	Player* getCurrentPlayer();
 	/// <summary>
 	/// Attempts to make a move from one spot to another for a given player
 	/// </summary>
@@ -46,16 +51,7 @@ public:
 	/// <param name="endY">The Y position of the target spot</param>
 	/// <returns></returns>
 	bool playerMove(Player* player, uint8_t startX, uint8_t startY, uint8_t endX, uint8_t endY);
-	/// <summary>
-	/// Ticks forward the game logic and draws the next frame
-	/// </summary>
-	void playGame();
-	/// <summary>
-	/// Iterates over the different pieces in the board, and sends all relevant information for the renderer to draw them to screen
-	/// </summary>
-	void setupRenderer();
-	void drawFrame();
-	void sendPlayerInput(glm::vec2 activeCase);
+	bool isValidCaseClick(glm::vec2 selectedCase);
 
 private:
 	Renderer* renderer;
@@ -64,7 +60,6 @@ private:
 	Player* currentTurn{};
 	GameStatus status{};
 	std::vector<Move*> movesPlayed{};
-	Spot* lastSelectedSpot;
 
 	bool makeMove(Move* move, Player* player);
 };

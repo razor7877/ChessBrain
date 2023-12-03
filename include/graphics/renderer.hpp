@@ -17,9 +17,16 @@ class Renderer
 public:
 	Renderer();
 	~Renderer();
+
+	/// <summary>
+	/// Iterates over the different pieces in the board, and sends all relevant information for the renderer to draw them to screen
+	/// </summary>
+	/// <param name="board">The board that the renderer should draw to the screen</param>
+	void setupRenderer(Board* board);
 	Sprite* addPiece(Piece* piece, uint8_t x, uint8_t y);
 	void clearSprites();
 	void drawFrame();
+	void setActiveCase(glm::vec2 activeCase);
 
 	Shader* boardShader;
 	Shader* pieceShader;
