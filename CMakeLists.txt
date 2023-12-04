@@ -6,8 +6,9 @@ file(GLOB_RECURSE sources src/*(.c|.cpp) include/*(.h|.hpp))
 
 find_package(OpenGL REQUIRED)
 
-# Add sources to project
+# Add sources to target
 add_executable(ChessBrain ${sources})
+set_property(TARGET ChessBrain PROPERTY CXX_STANDARD 17)
 # Add header files
 target_include_directories(ChessBrain PUBLIC include/)
 target_link_libraries(ChessBrain PUBLIC ${ChessBrain_SOURCE_DIR}/libs/glfw3.lib OpenGL::GL)

@@ -7,10 +7,6 @@
 #include "game/game.hpp"
 #include "game/humanPlayer.hpp"
 
-#include "tensorflow/core/public/session.h"
-#include "tensorflow/core/public/session_options.h"
-#include "tensorflow/core/platform/env.h"
-
 // Startup resolution
 const int WINDOW_WIDTH = 600;
 const int WINDOW_HEIGHT = 600;

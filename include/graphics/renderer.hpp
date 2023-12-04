@@ -24,17 +24,21 @@ public:
 	/// <param name="board">The board that the renderer should draw to the screen</param>
 	void setupRenderer(Board* board);
 	Sprite* addPiece(Piece* piece, uint8_t x, uint8_t y);
+	void movePiece(Piece* piece, uint8_t x, uint8_t y);
+	void deletePiece(Piece* piece);
 	void clearSprites();
 	void drawFrame();
 	void setActiveCase(glm::vec2 activeCase);
 
-	Shader* boardShader;
-	Shader* pieceShader;
-
 private:
 	unsigned int boardVAO;
 	unsigned int boardVBO;
-	std::vector<Sprite*> sprites;
+	// The renderer keeps a lookup table of a piece and it's associated sprite so that the game can update
+	// movement of individual sprites with the movePiece method
+	std::map<Piece*, Sprite*> pieceToSprite;
 	std::map<PieceType, Texture*> whitePieceTextures;
 	std::map<PieceType, Texture*> blackPieceTextures;
+
+	Shader* boardShader;
+	Shader* pieceShader;
 };

@@ -154,6 +154,7 @@ bool Game::makeMove(Move* move, Player* player)
 #endif
 		destPiece->setKilled(true);
 		move->setPieceKilled(destPiece);
+		renderer->deletePiece(destPiece);
 	}
 
 	// TODO : Implement castling
@@ -162,6 +163,8 @@ bool Game::makeMove(Move* move, Player* player)
 
 	// Move piece to the new spot
 	end->piece = sourcePiece;
+	// Update the renderer
+	renderer->movePiece(sourcePiece, end->x - 1, end->y - 1);
 
 	// Remove piece from the old spot
 	start->piece = nullptr;
@@ -184,7 +187,7 @@ bool Game::makeMove(Move* move, Player* player)
 	else
 		this->currentTurn = players[0];
 
-	renderer->setupRenderer(board);
+	//renderer->setupRenderer(board);
 
 	return true;
 }

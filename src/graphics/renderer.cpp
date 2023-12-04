@@ -59,14 +59,14 @@ Renderer::~Renderer()
 {
 	delete pieceShader;
 
-	for (Sprite* sprite : this->sprites)
+	for (const auto & [piece, sprite] : this->pieceToSprite)
 		delete sprite;
 
-	for (const auto& pair : this->whitePieceTextures)
-		delete pair.second;
+	for (const auto & [pieceType, texture] : this->whitePieceTextures)
+		delete texture;
 
-	for (const auto& pair : this->blackPieceTextures)
-		delete pair.second;
+	for (const auto & [pieceType, texture] : this->blackPieceTextures)
+		delete texture;
 }
 
 void Renderer::setupRenderer(Board* board)
@@ -103,12 +103,23 @@ Sprite* Renderer::addPiece(Piece* piece, uint8_t x, uint8_t y)
 	Sprite* pawnSprite = new Sprite(pieceTexture);
 	pawnSprite->moveSprite(x, y);
 
-	this->sprites.push_back(pawnSprite);
+	this->pieceToSprite[piece] = pawnSprite;
 
 	return pawnSprite;
 }
 
-void Renderer::clearSprites() { this->sprites.clear(); }
+void Renderer::movePiece(Piece* piece, uint8_t x, uint8_t y)
+{
+	this->pieceToSprite[piece]->moveSprite(x, y);
+}
+
+void Renderer::deletePiece(Piece* piece)
+{
+	delete this->pieceToSprite[piece];
+	this->pieceToSprite.erase(piece);
+}
+
+void Renderer::clearSprites() { this->pieceToSprite.clear(); }
 
 void Renderer::drawFrame()
 {
@@ -123,7 +134,7 @@ void Renderer::drawFrame()
 
 	// Draw all chess pieces sprites
 	this->pieceShader->use();
-	for (Sprite* sprite : this->sprites)
+	for (const auto & [piece, sprite] : this->pieceToSprite)
 	{
 		glBindVertexArray(sprite->VAO);
 		glBindTexture(GL_TEXTURE_2D, sprite->texture->texID);
