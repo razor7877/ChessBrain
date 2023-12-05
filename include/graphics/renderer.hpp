@@ -26,11 +26,12 @@ public:
 	Sprite* addPiece(Piece* piece, uint8_t x, uint8_t y);
 	void movePiece(Piece* piece, uint8_t x, uint8_t y);
 	void deletePiece(Piece* piece);
-	void clearSprites();
 	void drawFrame();
 	void setActiveCase(glm::vec2 activeCase);
 
 private:
+	void clearSprites();
+
 	unsigned int boardVAO;
 	unsigned int boardVBO;
 	// The renderer keeps a lookup table of a piece and it's associated sprite so that the game can update
