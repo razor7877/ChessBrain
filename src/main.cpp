@@ -4,12 +4,7 @@
 #include "game/game.hpp"
 #include "game/humanPlayer.hpp"
 
-#include "tsl/platform/ml_dtypes.h"
-#include "tensorflow/cc/saved_model/loader.h"
-#include "tensorflow/cc/saved_model/tag_constants.h"
-#include "tensorflow/core/public/session.h"
-#include "tensorflow/core/public/session_options.h"
-#include "tensorflow/core/framework/logging.h"
+#include "curl/curl.h"
 
 // Startup resolution
 const int WINDOW_WIDTH = 600;
@@ -26,47 +21,27 @@ HumanPlayer* p1;
 HumanPlayer* p2;
 Game* game;
 
-
 int main()
 {
-	// We need to use SaveModelBundleLite as a in-memory model object for tensorflow's model bundle.
-	const auto savedModelBundle = std::make_unique<tensorflow::SavedModelBundleLite>();
+	CURL* curl;
+	CURLcode res;
 
-	// Create dummy options.
-	tensorflow::SessionOptions sessionOptions;
-	tensorflow::RunOptions runOptions;
-
-	// Load the model bundle.
-	const auto loadResult = tensorflow::LoadSavedModel(
-		sessionOptions,
-		runOptions,
-		"models/model.pb", //std::string containing path of the model bundle
-		{ tensorflow::kSavedModelTagServe },
-		savedModelBundle.get());
-
-	// Check if loading was okay.
-	TF_CHECK_OK(loadResult);
-
-	// Provide input data.
-	tensorflow::Tensor tensor(tensorflow::DT_FLOAT, tensorflow::TensorShape({ 2 }));
-	tensor.vec<float>()(0) = 20.f;
-	tensor.vec<float>()(1) = 6000.f;
-
-	// Link the data with some tags so tensorflow know where to put those data entries.
-	std::vector<std::pair<std::string, tensorflow::Tensor>> feedInputs = { {"serving_default_flatten_input:0", tensor} };
-	std::vector<std::string> fetches = { "StatefulPartitionedCall:0" };
-
-	// We need to store the results somewhere.
-	std::vector<tensorflow::Tensor> outputs;
-
-	// Let's run the model...
-	auto status = savedModelBundle->GetSession()->Run(feedInputs, fetches, {}, &outputs);
-	TF_CHECK_OK(status);
-
-	// ... and print out it's predictions.
-	for (const auto& record : outputs)
+	curl = curl_easy_init();
+	if (curl)
 	{
-		LOG(INFO) << record.DebugString();
+		curl_easy_setopt(curl, CURLOPT_URL, "http://localhost:10001/predict");
+		// Set the POST data
+		curl_easy_setopt(curl, CURLOPT_POSTFIELDS, "key1=value1&key2=value2");
+
+		/* Perform the request, res will get the return code */
+		res = curl_easy_perform(curl);
+		/* Check for errors */
+		if (res != CURLE_OK)
+			fprintf(stderr, "curl_easy_perform() failed: %s\n",
+				curl_easy_strerror(res));
+
+		// Always cleanup
+		curl_easy_cleanup(curl);
 	}
 
 	if (setupGlfwContext() != 0)

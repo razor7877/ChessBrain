@@ -400,6 +400,7 @@ FodyWeavers.xsd
 abseil/
 protobuf/
 tensorflow/
+curl/
 build/
 glfw-3.3.8/
 libs/tensorflow.dll
