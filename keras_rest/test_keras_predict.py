@@ -48,8 +48,6 @@ chess_dict = {
 
 chess_board = chess.Board()
 
-response = requests.post(api_url, "123")
-
 matrix = make_matrix(chess_board)
 board = translate(matrix,chess_dict)
 board = np.array(board)

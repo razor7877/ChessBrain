@@ -13,7 +13,9 @@ def load_model():
 	# pre-trained on ImageNet and provided by Keras, but you can
 	# substitute in your own networks just as easily)
 	global model
-	model = models.load_model("./models/chessai.keras")
+	model = models.load_model("./models/model.h5")
+
+
 
 @app.route("/predict", methods=["POST"])
 def predict():

@@ -175,3 +175,8 @@ Spot* Board::getSpot(glm::vec2 pos)
 #endif
 	return &this->boxes[y][x];
 }
+
+void setupBitboard()
+{
+
+}

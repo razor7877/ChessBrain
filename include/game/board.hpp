@@ -35,9 +35,13 @@ public:
 	/// <returns></returns>
 	Spot* getSpot(uint8_t x, uint8_t y);
 	Spot* getSpot(glm::vec2 pos);
+	void setupBitboard();
 
 private:
 	// A two dimensional array containing the spots
 	// It's a row major array, the first index selects the row, the second one select the column
 	Spot** boxes;
+
+	// A 12x8x8 array, to correspond with the inputs expected from the CNN model
+	int bitBoard[12][8][8];
 };

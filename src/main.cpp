@@ -12,7 +12,7 @@ const int WINDOW_HEIGHT = 600;
 
 // Current resolution (can be changed by window resize callbacks)
 int windowWidth = WINDOW_WIDTH;
-int windowHeight = WINDOW_HEIGHT;// Current resolution (can be changed by window resize callbacks)
+int windowHeight = WINDOW_HEIGHT;
 
 GLFWwindow* window;
 
