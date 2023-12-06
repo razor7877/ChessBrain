@@ -1,7 +1,7 @@
 #include <iostream>
 
 #include "game/humanPlayer.hpp"
-#include <game/game.hpp>
+#include "game/game.hpp"
 
 HumanPlayer::HumanPlayer(bool whiteSide, Renderer* currentRenderer) : Player(whiteSide)
 {
