@@ -67,7 +67,10 @@ bool Game::playerMove(Player* player, uint8_t startX, uint8_t startY, uint8_t en
 		delete move;
 
 	if (result)
+	{
 		std::cout << this->getFEN() << "\n";
+		this->currentTurn->playNextMove(this);
+	}
 
 	return result;
 }
@@ -217,8 +220,6 @@ bool Game::makeMove(Move* move, Player* player)
 	{
 		this->currentTurn = players[0];
 	}
-
-	this->currentTurn->playNextMove(this);
 
 	return true;
 }

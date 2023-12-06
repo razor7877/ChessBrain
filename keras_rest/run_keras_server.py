@@ -12,7 +12,7 @@ model = None
 # Load the pretrained model
 def load_model():
     global model
-    model = models.load_model("models/model.h5")
+    model = models.load_model("models/model_885boards_100epochs.h5")
 
 squares_index = {
   'a': 0,
