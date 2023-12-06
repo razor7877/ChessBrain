@@ -9,8 +9,10 @@ class AiPlayer : public virtual Player
 public:
 	AiPlayer(bool whiteSide);
 	~AiPlayer();
-	void playNextMove(Game* currentGame);
+	virtual void playNextMove(Game* currentGame);
 
 private:
 	CURL* curl;
+
+	void playMoveFromSAN(Game* currentGame, std::string SAN);
 };

@@ -5,7 +5,13 @@
 
 HumanPlayer::HumanPlayer(bool whiteSide, Renderer* currentRenderer) : Player(whiteSide)
 {
+	this->isAiPlayer = false;
 	this->currentRenderer = currentRenderer;
+}
+
+void HumanPlayer::playNextMove(Game* currentGame)
+{
+	
 }
 
 void HumanPlayer::updateInput(Game* currentGame, glm::vec2 clickedCase)

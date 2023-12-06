@@ -12,6 +12,7 @@ public:
 	Renderer* currentRenderer;
 
 	HumanPlayer(bool whiteSide, Renderer* currentRenderer);
+	virtual void playNextMove(Game* currentGame);
 	void updateInput(Game* currentGame, glm::vec2 clickedCase);
 
 private:

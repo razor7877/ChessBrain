@@ -16,6 +16,9 @@ enum class GameStatus
 	RESIGNATION,
 };
 
+class Player;
+class Move;
+
 class Game
 {
 public:

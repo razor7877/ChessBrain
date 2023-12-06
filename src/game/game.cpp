@@ -5,6 +5,7 @@
 #endif
 
 #include "game/game.hpp"
+#include "game/aiPlayer.hpp"
 #include "pieces/king.hpp"
 
 Game::Game()
@@ -18,9 +19,6 @@ Game::Game(Renderer* renderer, Player* p1, Player* p2)
 	this->board = new Board();
 	this->renderer = renderer;
 	renderer->setupRenderer(board);
-
-	//p1->currentGame = this;
-	//p2->currentGame = this;
 
 	this->players[0] = p1;
 	this->players[1] = p2;
@@ -59,6 +57,7 @@ Player* Game::getCurrentPlayer() { return this->currentTurn; }
 
 bool Game::playerMove(Player* player, uint8_t startX, uint8_t startY, uint8_t endX, uint8_t endY)
 {
+	this->renderer->setActiveCase(glm::vec2(startX, startY));
 	Spot* startBox = board->getSpot(startX, startY);
 	Spot* endBox = board->getSpot(endX, endY);
 	Move* move = new Move(player, startBox, endBox);
@@ -68,7 +67,7 @@ bool Game::playerMove(Player* player, uint8_t startX, uint8_t startY, uint8_t en
 		delete move;
 
 	if (result)
-		std::cout << this->getFEN();
+		std::cout << this->getFEN() << "\n";
 
 	return result;
 }
@@ -211,9 +210,15 @@ bool Game::makeMove(Move* move, Player* player)
 
 	// Change turns
 	if (this->currentTurn == players[0])
+	{
 		this->currentTurn = players[1];
+	}
 	else
+	{
 		this->currentTurn = players[0];
+	}
+
+	this->currentTurn->playNextMove(this);
 
 	return true;
 }

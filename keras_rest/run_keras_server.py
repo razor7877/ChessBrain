@@ -115,22 +115,20 @@ def get_ai_move(board, depth):
 def predict():
     # initialize the data dictionary that will be returned from the
     # view
-    data = {"success": False}
+    data = ""
     
     print("Received request")
 
     # ensure an image was properly uploaded to our endpoint
     if flask.request.method == "POST":
         if flask.request.form.get("board"):
-            data["success"] = True
             board_json_fen = flask.request.form.get("board")
             print("FEN rep: " + str(board_json_fen))
-            print("FEN rep: " + "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
-            #board = chess.Board("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
             board = chess.Board(board_json_fen)
-            data["output"] = str(get_ai_move(board, 1))
+            data = str(get_ai_move(board, 1))
+            print("Returning move " + data)
 
-    return flask.jsonify(data)
+    return data
 
 # if this is the main thread of execution first load the model and
 # then start the server

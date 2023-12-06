@@ -17,8 +17,7 @@ GLFWwindow* window;
 
 Renderer* renderer;
 HumanPlayer* p1;
-HumanPlayer* p2;
-AiPlayer* ai;
+AiPlayer* p2;
 Game* game;
 
 int main()
@@ -30,10 +29,8 @@ int main()
 
 	renderer = new Renderer();
 	p1 = new HumanPlayer(true, renderer);
-	p2 = new HumanPlayer(false, renderer);
-	ai = new AiPlayer(false);
+	p2 = new AiPlayer(false);
 	game = new Game(renderer, p1, p2);
-	ai->playNextMove(game);
 
 	// Render loop
 	while (!glfwWindowShouldClose(window))
@@ -87,10 +84,10 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 #endif
 
 		glm::vec2 clickedCase = glm::vec2(xCase, yCase);
-		if (game->getCurrentPlayer() == p1)
+		if (game->getCurrentPlayer() == p1 && !p1->isComputer())
 			p1->updateInput(game, clickedCase);
-		else
-			p2->updateInput(game, clickedCase);
+		//else if (!p2->isComputer())
+		//	p2->updateInput(game, clickedCase);
 	}
 }
 
