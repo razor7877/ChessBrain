@@ -73,6 +73,8 @@ void Board::resetBoard()
 			this->boxes[x][y] = Spot(nullptr, y + 1, x + 1);
 		}
 	}
+
+	this->getFEN();
 }
 
 void Board::dumpBoardToConsole()
@@ -132,8 +134,8 @@ void Board::showBoardToConsole()
 			else
 			{
 				PieceType type = spot->piece->getType();
-				board += Piece::enumToString.at(type) + " ";
-				board += spot->piece->isWhite() ? "0" : "1";
+				board += Piece::enumToString.at(type);
+				board += spot->piece->isWhite() ? " 0" : " 1";
 			}
 			board += " | ";
 		}
@@ -176,7 +178,48 @@ Spot* Board::getSpot(glm::vec2 pos)
 	return &this->boxes[y][x];
 }
 
-void setupBitboard()
+std::string Board::getFEN()
 {
+	std::string FEN = "";
+	int emptySpaceCount = 0;
 
+	// Generate the FEN for the piece positions
+	for (int x = 7; x >= 0; x--)
+	{
+		for (int y = 0; y < 8; y++)
+		{
+			// Check with reverse coords to iterate row by row
+			Spot* s = this->getSpot(y, x);
+			if (s->piece == nullptr)
+			{
+				emptySpaceCount++;
+			}
+			else
+			{
+				if (emptySpaceCount > 0)
+				{
+					FEN += std::to_string(emptySpaceCount);
+					emptySpaceCount = 0;
+				}
+				// Black pieces are lowercased in FEN
+				if (!s->piece->isWhite())
+					FEN += tolower(Piece::enumToString.at(s->piece->getType()));
+				else
+					FEN += Piece::enumToString.at(s->piece->getType());
+			}
+		}
+
+		// Check in case whole row was empty
+		if (emptySpaceCount > 0)
+		{
+			FEN += std::to_string(emptySpaceCount);
+			emptySpaceCount = 0;
+		}
+
+		// No "/" character after last row
+		if (x > 0)
+			FEN += "/";
+	}
+
+	return FEN;
 }

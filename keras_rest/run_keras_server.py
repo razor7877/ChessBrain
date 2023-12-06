@@ -97,7 +97,10 @@ def minimax(board, depth, alpha, beta, maximizing_player):
 def get_ai_move(board, depth):
   max_move = None
   max_eval = -numpy.inf
-
+  if board.turn == chess.WHITE:
+    print("It's White's turn.")
+  else:
+    print("It's Black's turn.")
   for move in board.legal_moves:
     board.push(move)
     eval = minimax(board, depth - 1, -numpy.inf, numpy.inf, False)

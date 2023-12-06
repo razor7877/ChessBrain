@@ -23,6 +23,7 @@ Game* game;
 
 int main()
 {
+	/*
 	CURL* curl;
 	CURLcode res;
 
@@ -33,16 +34,16 @@ int main()
 		// Set the POST data
 		curl_easy_setopt(curl, CURLOPT_POSTFIELDS, "key1=value1&key2=value2");
 
-		/* Perform the request, res will get the return code */
+		// Perform the request, res will get the return code
 		res = curl_easy_perform(curl);
-		/* Check for errors */
+		// Check for errors
 		if (res != CURLE_OK)
 			fprintf(stderr, "curl_easy_perform() failed: %s\n",
 				curl_easy_strerror(res));
 
 		// Always cleanup
 		curl_easy_cleanup(curl);
-	}
+	}*/
 
 	if (setupGlfwContext() != 0)
 	{

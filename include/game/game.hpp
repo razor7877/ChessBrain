@@ -52,6 +52,7 @@ public:
 	/// <returns></returns>
 	bool playerMove(Player* player, uint8_t startX, uint8_t startY, uint8_t endX, uint8_t endY);
 	bool isValidCaseClick(glm::vec2 selectedCase);
+	std::string getFEN();
 
 private:
 	Renderer* renderer;

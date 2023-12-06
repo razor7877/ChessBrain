@@ -67,6 +67,9 @@ bool Game::playerMove(Player* player, uint8_t startX, uint8_t startY, uint8_t en
 	if (!result)
 		delete move;
 
+	if (result)
+		std::cout << this->getFEN();
+
 	return result;
 }
 
@@ -91,6 +94,31 @@ bool Game::isValidCaseClick(glm::vec2 selectedCase)
 		return false;
 
 	return true;
+}
+
+std::string Game::getFEN()
+{
+	std::string FEN = this->board->getFEN();
+
+	// Add current turn info
+	if (this->currentTurn->isWhiteSide())
+		FEN += " w";
+	else
+		FEN += " b";
+
+	// TODO : Castling rights FEN
+	FEN += " -";
+
+	// TODO : En passant FEN
+	FEN += " -";
+
+	// TODO : Half move clock
+	FEN += " 0";
+
+	// TODO : Fullmove number
+	FEN += " 0";
+
+	return FEN;
 }
 
 bool Game::makeMove(Move* move, Player* player)
@@ -186,8 +214,6 @@ bool Game::makeMove(Move* move, Player* player)
 		this->currentTurn = players[1];
 	else
 		this->currentTurn = players[0];
-
-	//renderer->setupRenderer(board);
 
 	return true;
 }

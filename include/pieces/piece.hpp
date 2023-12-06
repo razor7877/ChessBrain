@@ -23,8 +23,8 @@ enum class PieceType
 class Piece
 {
 public:
-	// Maps each enum type to a respective string (KING maps to "K" etc.)
-	const static std::map<PieceType, std::string> enumToString;
+	// Maps each enum type to a respective char (KING maps to "K" etc.)
+	const static std::map<PieceType, char> enumToString;
 
 	Piece(bool white);
 	bool isWhite();
