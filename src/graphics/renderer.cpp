@@ -11,27 +11,27 @@ Renderer::Renderer()
 
 	// Images from https://opengameart.org/content/chess-pieces-and-board-squares
 	whitePieceTextures = {
-		{ PieceType::PAWN, new Texture("C:/Users/kylia/Desktop/GitHub/ChessBrain/images/w_pawn_png_1024px.png", true) },
-		{ PieceType::BISHOP, new Texture("C:/Users/kylia/Desktop/GitHub/ChessBrain/images/w_bishop_png_1024px.png", true) },
-		{ PieceType::KING, new Texture("C:/Users/kylia/Desktop/GitHub/ChessBrain/images/w_king_png_1024px.png", true) },
-		{ PieceType::QUEEN, new Texture("C:/Users/kylia/Desktop/GitHub/ChessBrain/images/w_queen_png_1024px.png", true) },
-		{ PieceType::KNIGHT, new Texture("C:/Users/kylia/Desktop/GitHub/ChessBrain/images/w_knight_png_1024px.png", true) },
-		{ PieceType::ROOK, new Texture("C:/Users/kylia/Desktop/GitHub/ChessBrain/images/w_rook_png_1024px.png", true) },
+		{ PieceType::PAWN, new Texture("images/w_pawn_png_1024px.png", true) },
+		{ PieceType::BISHOP, new Texture("images/w_bishop_png_1024px.png", true) },
+		{ PieceType::KING, new Texture("images/w_king_png_1024px.png", true) },
+		{ PieceType::QUEEN, new Texture("images/w_queen_png_1024px.png", true) },
+		{ PieceType::KNIGHT, new Texture("images/w_knight_png_1024px.png", true) },
+		{ PieceType::ROOK, new Texture("images/w_rook_png_1024px.png", true) },
 	};
 
 	blackPieceTextures = {
-		{ PieceType::PAWN, new Texture("C:/Users/kylia/Desktop/GitHub/ChessBrain/images/b_pawn_png_1024px.png", true) },
-		{ PieceType::BISHOP, new Texture("C:/Users/kylia/Desktop/GitHub/ChessBrain/images/b_bishop_png_1024px.png", true) },
-		{ PieceType::KING, new Texture("C:/Users/kylia/Desktop/GitHub/ChessBrain/images/b_king_png_1024px.png", true) },
-		{ PieceType::QUEEN, new Texture("C:/Users/kylia/Desktop/GitHub/ChessBrain/images/b_queen_png_1024px.png", true) },
-		{ PieceType::KNIGHT, new Texture("C:/Users/kylia/Desktop/GitHub/ChessBrain/images/b_knight_png_1024px.png", true) },
-		{ PieceType::ROOK, new Texture("C:/Users/kylia/Desktop/GitHub/ChessBrain/images/b_rook_png_1024px.png", true) },
+		{ PieceType::PAWN, new Texture("images/b_pawn_png_1024px.png", true) },
+		{ PieceType::BISHOP, new Texture("images/b_bishop_png_1024px.png", true) },
+		{ PieceType::KING, new Texture("images/b_king_png_1024px.png", true) },
+		{ PieceType::QUEEN, new Texture("images/b_queen_png_1024px.png", true) },
+		{ PieceType::KNIGHT, new Texture("images/b_knight_png_1024px.png", true) },
+		{ PieceType::ROOK, new Texture("images/b_rook_png_1024px.png", true) },
 	};
 
 	// Create the shader for the board
 	this->boardShader = new Shader(
-		"C:/Users/kylia/Desktop/GitHub/ChessBrain/src/shaders/board.vert",
-		"C:/Users/kylia/Desktop/GitHub/ChessBrain/src/shaders/board.frag"
+		"shaders/board.vert",
+		"shaders/board.frag"
 	);
 
 	// Show no active case on the board at first
@@ -50,8 +50,8 @@ Renderer::Renderer()
 
 	// Create the shader for drawing pieces
 	this->pieceShader = new Shader(
-		"C:/Users/kylia/Desktop/GitHub/ChessBrain/src/shaders/piece.vert",
-		"C:/Users/kylia/Desktop/GitHub/ChessBrain/src/shaders/piece.frag"
+		"shaders/piece.vert",
+		"shaders/piece.frag"
 	);
 }
 

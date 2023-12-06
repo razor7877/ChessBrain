@@ -28,3 +28,7 @@ target_link_libraries(ChessBrain PUBLIC
 	glfw
 	libcurl_static
 	OpenGL::GL ${libs})
+
+# Copy textures and shaders to binary folder
+file(COPY images DESTINATION ${ChessBrain_BINARY_DIR}/Debug)
+file(COPY src/shaders DESTINATION ${ChessBrain_BINARY_DIR}/Debug)
