@@ -14,6 +14,7 @@ Game::Game()
 	this->board = nullptr;
 	this->currentTurn = nullptr;
 	this->currentEnPassant = nullptr;
+	this->queuedMove = nullptr;
 }
 
 Game::Game(Renderer* renderer, Player* p1, Player* p2)
@@ -31,6 +32,9 @@ Game::Game(Renderer* renderer, Player* p1, Player* p2)
 		this->currentTurn = this->players[1];
 
 	this->currentEnPassant = nullptr;
+	this->queuedMove = nullptr;
+
+	this->currentTurn->playNextMove(this);
 }
 
 Game::~Game()
@@ -70,10 +74,7 @@ bool Game::playerMove(Player* player, uint8_t startX, uint8_t startY, uint8_t en
 		delete move;
 
 	if (result)
-	{
-		std::cout << this->getFEN() << "\n";
-		this->currentTurn->playNextMove(this);
-	}
+		this->queuedMove = move;
 
 	return result;
 }
@@ -99,6 +100,16 @@ bool Game::isValidCaseClick(glm::vec2 selectedCase)
 		return false;
 
 	return true;
+}
+
+void Game::playAnyQueuedMove()
+{
+	if (this->queuedMove != nullptr)
+	{
+		std::cout << this->getFEN() << "\n";
+		this->executeQueuedMove();
+		this->currentTurn->playNextMove(this);
+	}
 }
 
 std::string Game::getFEN()
@@ -183,6 +194,7 @@ bool Game::makeMove(Move* move, Player* player)
 		// For en passant, the attacking piece must be a pawn, moving one case ahead, to the same x position as the attacked pawn
 		if (sourcePiece->getType() == PieceType::PAWN && distY == 1 && this->currentEnPassant->x == end->x)
 		{
+			// TODO : This code should only be called when executing the queued move
 			enPassantMove = true;
 			Piece* enPassantPiece = this->currentEnPassant->piece;
 			enPassantPiece->setKilled(true);
@@ -199,6 +211,18 @@ bool Game::makeMove(Move* move, Player* player)
 	}
 
 	this->currentEnPassant = nullptr;
+	this->queuedMove = move;
+
+	return true;
+}
+
+void Game::executeQueuedMove()
+{
+	Spot* start = this->queuedMove->getStart();
+	Spot* end = this->queuedMove->getEnd();
+
+	Piece* sourcePiece = start->piece;
+	Piece* destPiece = end->piece;
 
 	// If a pawn moves 2 cases forward, keep it's destination to check for en passant next turn
 	if (sourcePiece->getType() == PieceType::PAWN)
@@ -226,13 +250,13 @@ bool Game::makeMove(Move* move, Player* player)
 		std::cout << "Successful kill on color: " << destPiece->isWhite() << "\n";
 #endif
 		destPiece->setKilled(true);
-		move->setPieceKilled(destPiece);
+		this->queuedMove->setPieceKilled(destPiece);
 		renderer->deletePiece(destPiece);
 	}
 
 	// TODO : Implement castling
 
-	this->movesPlayed.push_back(move);
+	this->movesPlayed.push_back(this->queuedMove);
 
 	// Move piece to the new spot
 	end->piece = sourcePiece;
@@ -248,7 +272,7 @@ bool Game::makeMove(Move* move, Player* player)
 #ifdef DEBUG_MODE
 		std::cout << "King killed, game finished\n";
 #endif
-		if (player->isWhiteSide())
+		if (this->currentTurn->isWhiteSide())
 			this->status = GameStatus::WHITE_WIN;
 		else
 			this->status = GameStatus::BLACK_WIN;
@@ -264,5 +288,5 @@ bool Game::makeMove(Move* move, Player* player)
 		this->currentTurn = players[0];
 	}
 
-	return true;
+	this->queuedMove = nullptr;
 }

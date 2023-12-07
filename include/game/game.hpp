@@ -61,6 +61,7 @@ public:
 	/// <param name="selectedCase">The case that the player is trying to select</param>
 	/// <returns>True if it is a valid selection, false otherwise</returns>
 	bool isValidCaseClick(glm::vec2 selectedCase);
+	void playAnyQueuedMove();
 	/// <summary>
 	/// Returns the FEN representation of the current game state
 	/// </summary>
@@ -75,6 +76,8 @@ private:
 	GameStatus status{};
 	std::vector<Move*> movesPlayed{};
 	Spot* currentEnPassant;
+	Move* queuedMove;
 
 	bool makeMove(Move* move, Player* player);
+	void executeQueuedMove();
 };

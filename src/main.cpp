@@ -5,9 +5,12 @@
 #include "game/humanPlayer.hpp"
 #include "game/aiPlayer.hpp"
 
+#define H_V_H 0
+#define H_V_AI 1
+#define AI_V_AI 2
 // Use this define to set up a human player against AI
 // Otherwise, game is set up with 2 human players
-//#define AGAINST_AI
+#define GAME_MODE 2
 
 // Startup resolution
 const int WINDOW_WIDTH = 600;
@@ -19,13 +22,19 @@ int windowHeight = WINDOW_HEIGHT;
 
 GLFWwindow* window;
 
-Renderer* renderer;
+Renderer* renderer; 
+#if GAME_MODE == H_V_H || GAME_MODE == H_V_AI
 HumanPlayer* p1;
-#ifdef AGAINST_AI
-AiPlayer* p2;
 #else
-HumanPlayer* p2;
+AiPlayer* p1;
 #endif
+
+#if GAME_MODE == H_V_H
+HumanPlayer* p2;
+#else
+AiPlayer* p2;
+#endif
+
 Game* game;
 
 int main()
@@ -36,17 +45,24 @@ int main()
 	}
 
 	renderer = new Renderer();
+
+#if GAME_MODE == H_V_H || GAME_MODE == H_V_AI
 	p1 = new HumanPlayer(true, renderer);
-#ifdef AGAINST_AI
-	p2 = new AiPlayer(false);
 #else
-	p2 = new HumanPlayer(false, renderer);
+	p1 = new AiPlayer(true);
 #endif
+#if GAME_MODE == H_V_H
+	p2 = new HumanPlayer(false, renderer);
+#else
+	p2 = new AiPlayer(false);
+#endif
+
 	game = new Game(renderer, p1, p2);
 
 	// Render loop
 	while (!glfwWindowShouldClose(window))
 	{
+		game->playAnyQueuedMove();
 		renderer->drawFrame();
 
 		// Swap new frame and poll GLFW for inputs
@@ -76,6 +92,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 {
+#if GAME_MODE == H_V_H || GAME_MODE == H_V_AI
 	// If the user left clicked somewhere in the window
 	if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS)
 	{
@@ -98,11 +115,14 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 		glm::vec2 clickedCase = glm::vec2(xCase, yCase);
 		if (game->getCurrentPlayer() == p1 && !p1->isComputer())
 			p1->updateInput(game, clickedCase);
-#ifndef AGAINST_AI
+#if GAME_MODE == H_V_H
 		else if (!p2->isComputer())
 			p2->updateInput(game, clickedCase);
 #endif
 	}
+#else
+	std::cout << "Click occurred but game is running in AI vs AI mode\n";
+#endif
 }
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
