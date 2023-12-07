@@ -106,8 +106,8 @@ void Game::playAnyQueuedMove()
 {
 	if (this->queuedMove != nullptr)
 	{
-		std::cout << this->getFEN() << "\n";
 		this->executeQueuedMove();
+		std::cout << this->getFEN() << "\n";
 		this->currentTurn->playNextMove(this);
 	}
 }
@@ -131,8 +131,8 @@ std::string Game::getFEN()
 	// TODO : Half move clock
 	FEN += " 0";
 
-	// TODO : Fullmove number
-	FEN += " 0";
+	int fullMoves = this->movesPlayed.size() / 2;
+	FEN += " " + std::to_string(fullMoves);
 
 	return FEN;
 }

@@ -10,7 +10,7 @@
 #define AI_V_AI 2
 // Use this define to set up a human player against AI
 // Otherwise, game is set up with 2 human players
-#define GAME_MODE 2
+#define GAME_MODE 0
 
 // Startup resolution
 const int WINDOW_WIDTH = 600;
