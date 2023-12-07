@@ -54,7 +54,7 @@ int main()
 #if GAME_MODE == H_V_H
 	p2 = new HumanPlayer(false, renderer);
 #else
-	p2 = new AiPlayer(false);
+	p2 = new AiPlayer(false, "http://localhost:10002/predict");
 #endif
 
 	game = new Game(renderer, p1, p2);

@@ -23,9 +23,10 @@ size_t WriteCallback(void* contents, size_t size, size_t nmemb, std::string* out
 	return total_size;
 }
 
-AiPlayer::AiPlayer(bool whiteSide) : Player(whiteSide)
+AiPlayer::AiPlayer(bool whiteSide, std::string apiUrl) : Player(whiteSide)
 {
 	this->isAiPlayer = true;
+	this->apiUrl = apiUrl;
 	curl = curl_easy_init();
 }
 
@@ -42,7 +43,7 @@ void AiPlayer::playNextMove(Game* currentGame)
 #endif
 
 	// Set the URL to query
-	curl_easy_setopt(curl, CURLOPT_URL, "http://localhost:10001/predict");
+	curl_easy_setopt(curl, CURLOPT_URL, this->apiUrl.c_str());
 
 	// Set the POST data
 	std::string post = "board=" + currentGame->getFEN();

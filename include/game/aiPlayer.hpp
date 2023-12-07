@@ -7,12 +7,13 @@
 class AiPlayer : public virtual Player
 {
 public:
-	AiPlayer(bool whiteSide);
+	AiPlayer(bool whiteSide, std::string apiUrl = "http://localhost:10001/predict");
 	~AiPlayer();
 	virtual void playNextMove(Game* currentGame);
 
 private:
 	CURL* curl;
+	std::string apiUrl;
 
 	void playMoveFromSAN(Game* currentGame, std::string SAN);
 };

@@ -1,9 +1,17 @@
+import argparse
+import pathlib
+parser = argparse.ArgumentParser("")
+parser.add_argument("--port", help="The port on which the API should be accessible", nargs='?', type=int, default=10001)
+parser.add_argument("--depth", help="The depth for the minimax algorithm search", nargs='?', type=int, default=1)
+parser.add_argument("--model", help="The model to be loaded for predicting moves", nargs='?', type=pathlib.Path, default="./models/model_885boards_100epochs.h5")
+args = parser.parse_args()
+print(args)
+
 # Import the necessary packages
 from keras import models
 import chess
 import numpy
 import flask
-import json
 
 # Initialize our Flask application and the Keras model
 app = flask.Flask(__name__)
@@ -12,7 +20,7 @@ model = None
 # Load the pretrained model
 def load_model():
     global model
-    model = models.load_model("models/model_885boards_100epochs.h5")
+    model = models.load_model(args.model)
 
 squares_index = {
   'a': 0,
@@ -125,7 +133,7 @@ def predict():
             board_json_fen = flask.request.form.get("board")
             print("FEN rep: " + str(board_json_fen))
             board = chess.Board(board_json_fen)
-            data = str(get_ai_move(board, 1))
+            data = str(get_ai_move(board, args.depth))
             print("Returning move " + data)
 
     return data
@@ -136,4 +144,4 @@ if __name__ == "__main__":
     print(("* Loading Keras model and Flask starting server..."
         "please wait until server has fully started"))
     load_model()
-    app.run(port=10001)
+    app.run(port=args.port)
