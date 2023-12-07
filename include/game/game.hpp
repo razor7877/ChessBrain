@@ -4,6 +4,7 @@
 #include "game/player.hpp"
 #include "game/board.hpp"
 #include "game/move.hpp"
+#include "game/spot.hpp"
 #include "graphics/renderer.hpp"
 
 enum class GameStatus
@@ -54,7 +55,16 @@ public:
 	/// <param name="endY">The Y position of the target spot</param>
 	/// <returns></returns>
 	bool playerMove(Player* player, uint8_t startX, uint8_t startY, uint8_t endX, uint8_t endY);
+	/// <summary>
+	/// Used by HumanPlayer class to determine if a case on the board is a valid selection by the current player
+	/// </summary>
+	/// <param name="selectedCase">The case that the player is trying to select</param>
+	/// <returns>True if it is a valid selection, false otherwise</returns>
 	bool isValidCaseClick(glm::vec2 selectedCase);
+	/// <summary>
+	/// Returns the FEN representation of the current game state
+	/// </summary>
+	/// <returns>The FEN of the game state as a string</returns>
 	std::string getFEN();
 
 private:
@@ -64,6 +74,7 @@ private:
 	Player* currentTurn{};
 	GameStatus status{};
 	std::vector<Move*> movesPlayed{};
+	Spot* currentEnPassant;
 
 	bool makeMove(Move* move, Player* player);
 };

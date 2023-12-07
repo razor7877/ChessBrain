@@ -11,7 +11,9 @@ bool Pawn::canMove(Board* board, Spot* start, Spot* end)
 		return false;
 
 	int distX = abs(end->x - start->x);
-	int distY = abs(end->y - start->y);
+	int distY = end->y - start->y;
+	// Gets the distance relative to the piece color (forward is +y for white, and -y for black)
+	distY = this->isWhite() ? distY : -distY;
 
 	// 1 case move on X axis might be diagonal attack
 	if (distX == 1)
@@ -27,8 +29,8 @@ bool Pawn::canMove(Board* board, Spot* start, Spot* end)
 	else if (end->piece != nullptr)
 		return false;
 
-	// If not first move and not moving by one case backward
-	// or first move but trying to move more than 2 backward
+	// If not first move and not moving by one case forward
+	// or first move but trying to move more than 2 forward
 	if ((!firstMove && distY != 1) ||
 		distY > 2)
 		return false;

@@ -10,8 +10,10 @@
 
 Game::Game()
 {
-	this->board = nullptr;
 	this->renderer = nullptr;
+	this->board = nullptr;
+	this->currentTurn = nullptr;
+	this->currentEnPassant = nullptr;
 }
 
 Game::Game(Renderer* renderer, Player* p1, Player* p2)
@@ -27,6 +29,8 @@ Game::Game(Renderer* renderer, Player* p1, Player* p2)
 		this->currentTurn = this->players[0];
 	else
 		this->currentTurn = this->players[1];
+
+	this->currentEnPassant = nullptr;
 }
 
 Game::~Game()
@@ -135,6 +139,7 @@ bool Game::makeMove(Move* move, Player* player)
 	Spot* end = move->getEnd();
 
 	Piece* sourcePiece = start->piece;
+	Piece* destPiece = end->piece;
 	// Check if there is a piece in this spot
 	if (sourcePiece == nullptr)
 	{
@@ -162,11 +167,51 @@ bool Game::makeMove(Move* move, Player* player)
 #endif
 		return false;
 	}
+
+	bool enPassantMove = false;
 	
 	// Make sure the attempted move is valid
-	if (!sourcePiece->canMove(board, start, end))
+	if (this->currentEnPassant != nullptr && destPiece == nullptr)
+	{
+#ifdef DEBUG_MODE
+		std::cout << "Checking for en passant attack\n";
+#endif
+		int distY = end->y - this->currentEnPassant->y;
+		// Gets the distance relative to the piece color (forward is +y for white, and -y for black)
+		distY = sourcePiece->isWhite() ? distY : -distY;
+
+		// For en passant, the attacking piece must be a pawn, moving one case ahead, to the same x position as the attacked pawn
+		if (sourcePiece->getType() == PieceType::PAWN && distY == 1 && this->currentEnPassant->x == end->x)
+		{
+			enPassantMove = true;
+			Piece* enPassantPiece = this->currentEnPassant->piece;
+			enPassantPiece->setKilled(true);
+			move->setPieceKilled(enPassantPiece);
+			renderer->deletePiece(enPassantPiece);
+#ifdef DEBUG_MODE
+			std::cout << "Successful en passant attack\n";
+#endif
+		}
+	}
+	if (!sourcePiece->canMove(board, start, end) && !enPassantMove)
 	{
 		return false;
+	}
+
+	this->currentEnPassant = nullptr;
+
+	// If a pawn moves 2 cases forward, keep it's destination to check for en passant next turn
+	if (sourcePiece->getType() == PieceType::PAWN)
+	{
+		int distY = abs(end->y - start->y);
+
+		if (distY == 2)
+		{
+			this->currentEnPassant = end;
+#ifdef DEBUG_MODE
+			std::cout << "Pawn moved 2 forward, setting en passant\n";
+#endif
+		}
 	}
 
 	// At this point, we have successfully made a move
@@ -175,7 +220,6 @@ bool Game::makeMove(Move* move, Player* player)
 #endif
 
 	// Check if there was a kill
-	Piece* destPiece = end->piece;
 	if (destPiece != nullptr)
 	{
 #ifdef DEBUG_MODE
