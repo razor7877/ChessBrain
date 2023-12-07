@@ -5,6 +5,10 @@
 #include "game/humanPlayer.hpp"
 #include "game/aiPlayer.hpp"
 
+// Use this define to set up a human player against AI
+// Otherwise, game is set up with 2 human players
+//#define AGAINST_AI
+
 // Startup resolution
 const int WINDOW_WIDTH = 600;
 const int WINDOW_HEIGHT = 600;
@@ -17,7 +21,11 @@ GLFWwindow* window;
 
 Renderer* renderer;
 HumanPlayer* p1;
+#ifdef AGAINST_AI
 AiPlayer* p2;
+#else
+HumanPlayer* p2;
+#endif
 Game* game;
 
 int main()
@@ -29,7 +37,11 @@ int main()
 
 	renderer = new Renderer();
 	p1 = new HumanPlayer(true, renderer);
+#ifdef AGAINST_AI
 	p2 = new AiPlayer(false);
+#else
+	p2 = new HumanPlayer(false, renderer);
+#endif
 	game = new Game(renderer, p1, p2);
 
 	// Render loop
@@ -86,8 +98,10 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 		glm::vec2 clickedCase = glm::vec2(xCase, yCase);
 		if (game->getCurrentPlayer() == p1 && !p1->isComputer())
 			p1->updateInput(game, clickedCase);
-		//else if (!p2->isComputer())
-		//	p2->updateInput(game, clickedCase);
+#ifndef AGAINST_AI
+		else if (!p2->isComputer())
+			p2->updateInput(game, clickedCase);
+#endif
 	}
 }
 

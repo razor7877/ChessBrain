@@ -113,7 +113,7 @@ void Board::dumpBoardToConsole()
 					break;
 				}
 			}
-			printf("Spot at (%d,%d): adr %x name %s\n", spot.x, spot.y, (int)spot.piece, type.c_str());
+			printf("Spot at (%d,%d): adr %x name %s\n", spot.x, spot.y, (intptr_t)spot.piece, type.c_str());
 		}
 	}
 }

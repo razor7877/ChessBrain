@@ -6,7 +6,7 @@ Move::Move(Player* player, Spot* start, Spot* end)
 	this->start = start;
 	this->end = end;
 	this->pieceMoved = start->piece;
-	this->pieceKilled = false;
+	this->pieceKilled = nullptr;
 }
 
 Move::~Move()
