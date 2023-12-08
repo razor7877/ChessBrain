@@ -1,2 +1,14 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+
+# Shader files
+*.vert linguist-detectable
+*.vert linguist-language=GLSL
+*.frag linguist-detectable
+*.frag linguist-language=GLSL
+
+# Big Notebook file makes for incorrect percentage size
+*.ipynb linguist-detectable=false
+
+*.c linguist-detectable=false
+*.h linguist-detectable=false
